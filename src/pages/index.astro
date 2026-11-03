@@ -311,46 +311,51 @@ const jsonLd = {
       <form id="rsvp-form" class="service-card rsvp-card p-6 lg:p-8 mt-9 text-left" novalidate>
         <span class="service-name">Confirmación</span>
 
-        <div class="form-field mt-4">
-          <label class="form-label" for="f-nombre">Tu nombre</label>
-          <input class="form-input" id="f-nombre" name="nombre" type="text" required placeholder="¿Quién eres?" autocomplete="name" />
-        </div>
-
-        <div class="form-field mt-4">
-          <label class="form-label" for="f-email">Tu correo <span class="opt">(para la invitación de calendario)</span></label>
-          <input class="form-input" id="f-email" name="email" type="email" required placeholder="tu@correo.cl" autocomplete="email" />
-        </div>
-
-        <div class="form-field">
-          <span class="form-label" id="lbl-vienes">¿Vienes?</span>
-          <div class="form-pills" role="radiogroup" aria-labelledby="lbl-vienes">
-            <label class="form-pill"><input type="radio" name="vienes" value="si" required /><span>Sí, voy</span></label>
-            <label class="form-pill"><input type="radio" name="vienes" value="quizas" /><span>Tal vez</span></label>
-            <label class="form-pill"><input type="radio" name="vienes" value="no" /><span>No puedo</span></label>
+        <div class="grid sm:grid-cols-3 gap-4 mt-4">
+          <div class="form-field !mb-0">
+            <label class="form-label" for="f-nombre">Tu nombre</label>
+            <input class="form-input" id="f-nombre" name="nombre" type="text" required placeholder="¿Quién eres?" autocomplete="name" />
+          </div>
+          <div class="form-field !mb-0">
+            <label class="form-label" for="f-email">Correo <span class="opt">(te agendo)</span></label>
+            <input class="form-input" id="f-email" name="email" type="email" required placeholder="tu@correo.cl" autocomplete="email" />
+          </div>
+          <div class="form-field !mb-0">
+            <label class="form-label" for="f-wsp">WhatsApp <span class="opt">(te recuerdo)</span></label>
+            <input class="form-input" id="f-wsp" name="whatsapp" type="tel" required placeholder="+56 9 1234 5678" autocomplete="tel" />
           </div>
         </div>
 
-        <div class="form-field">
-          <span class="form-label" id="lbl-amigos">¿Vienes con amigues?</span>
-          <div class="form-pills" role="radiogroup" aria-labelledby="lbl-amigos">
-            <label class="form-pill"><input type="radio" name="amigos" value="0" required /><span>Solo yo</span></label>
-            <label class="form-pill"><input type="radio" name="amigos" value="1" /><span>+1</span></label>
-            <label class="form-pill"><input type="radio" name="amigos" value="2" /><span>+2</span></label>
-            <label class="form-pill"><input type="radio" name="amigos" value="3" /><span>+3</span></label>
-            <label class="form-pill"><input type="radio" name="amigos" value="4+" /><span>+4 o más</span></label>
+        <div class="grid sm:grid-cols-2 gap-4 mt-5">
+          <div class="form-field !mb-0">
+            <span class="form-label" id="lbl-vienes">¿Vienes?</span>
+            <div class="form-pills" role="radiogroup" aria-labelledby="lbl-vienes">
+              <label class="form-pill"><input type="radio" name="vienes" value="si" required /><span>Sí, voy</span></label>
+              <label class="form-pill"><input type="radio" name="vienes" value="quizas" /><span>Tal vez</span></label>
+            </div>
+          </div>
+          <div class="form-field !mb-0">
+            <label class="form-label" for="f-amigos">¿Vienes con amigues?</label>
+            <select class="form-select" id="f-amigos" name="amigos" required>
+              <option value="" selected disabled>Elige</option>
+              <option value="0">Solo yo</option>
+              <option value="1">+1 amigue</option>
+              <option value="2">+2 amigues</option>
+              <option value="3">+3 amigues</option>
+              <option value="4+">+4 o más</option>
+            </select>
           </div>
         </div>
 
-        <div class="form-field">
-          <label class="form-label" for="f-restricciones">Restricciones o alergias <span class="opt">(el menú es vegano)</span></label>
-          <input class="form-input" id="f-restricciones" name="restricciones" type="text" placeholder="Celíaca, frutos secos, ninguna..." />
-        </div>
-
-        <div class="form-field">
-          <span class="form-label" id="lbl-bingo">¿Quieres cartón de bingo?</span>
-          <div class="form-pills" role="radiogroup" aria-labelledby="lbl-bingo">
-            <label class="form-pill"><input type="radio" name="bingo" value="si" required /><span>Sí, obvio</span></label>
-            <label class="form-pill"><input type="radio" name="bingo" value="no" /><span>No, solo a comer</span></label>
+        <div class="form-field mt-5">
+          <span class="form-label" id="lbl-rest">¿Alguna restricción alimentaria? <span class="opt">(el menú es vegano)</span></span>
+          <div class="form-pills" role="radiogroup" aria-labelledby="lbl-rest">
+            <label class="form-pill"><input type="radio" name="tiene_rest" value="no" required /><span>No</span></label>
+            <label class="form-pill"><input type="radio" name="tiene_rest" value="si" /><span>Sí</span></label>
+          </div>
+          <div id="rest-wrap" class="hidden mt-3">
+            <label class="sr-only" for="f-restricciones">¿Cuál?</label>
+            <input class="form-input" id="f-restricciones" name="restricciones" type="text" placeholder="Cuéntame cuál (celíaca, frutos secos...)" />
           </div>
         </div>
 
@@ -388,6 +393,18 @@ const jsonLd = {
     };
     tick();
     setInterval(tick, 1000);
+
+    // Restricción: el input solo aparece si marca "Sí"
+    const restWrap = document.getElementById('rest-wrap');
+    const restInput = document.getElementById('f-restricciones') as HTMLInputElement | null;
+    document.querySelectorAll('input[name="tiene_rest"]').forEach(radio => {
+      radio.addEventListener('change', () => {
+        const show = (radio as HTMLInputElement).value === 'si' && (radio as HTMLInputElement).checked;
+        restWrap?.classList.toggle('hidden', !show);
+        if (!show && restInput) restInput.value = '';
+        if (show) restInput?.focus();
+      });
+    });
 
     // RSVP: envía al Apps Script que escribe en la Sheet de Drive
     const RSVP_ENDPOINT = 'https://script.google.com/macros/s/PEGAR-TU-EXEC/exec';
