@@ -102,6 +102,55 @@ const jsonLd = {
     </div>
   </header>
 
+  <!-- Donaciones -->
+  <section class="section-block donar-band" id="donar">
+    <div class="container-mid">
+      <div class="section-title-wrapper">
+        <span class="section-tag">// en vez de regalo</span>
+        <h2 class="section-title-front">Dona para Alonso</h2>
+        <p class="section-title-subtitle">
+          El mejor regalo para mí es ayudarlo a recuperar su tienda. Elige un monto
+          o dona lo que quieras, todo por Mercado Pago.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        {donaciones.map(d => (
+          <a
+            href={d.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class:list={['service-card p-6 text-center', { 'donacion-card--destacada': d.destacada }]}
+          >
+            <span class="service-name">{d.destacada ? 'La más elegida' : 'Donación'}</span>
+            <span class="block text-[2.4em] font-bold leading-none" style="font-family:var(--font-family-titles)">{d.monto}</span>
+            <p class="text-sm text-custom-dark-gray mt-3">{d.desc}</p>
+            <span class="btn btn-primary mt-5">Donar {d.monto}</span>
+          </a>
+        ))}
+      </div>
+      <div class="mt-6 text-center">
+        <a
+          href="https://link.mercadopago.cl/cumplefranibe"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="service-card p-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-left"
+        >
+          <div>
+            <span class="service-name">Otro monto</span>
+            <h3 class="text-lg font-semibold">¿Quieres donar otra cantidad?</h3>
+            <p class="text-sm text-custom-dark-gray mt-1">
+              link.mercadopago.cl/cumplefranibe
+            </p>
+          </div>
+          <span class="btn btn-secondary flex-shrink-0">Donar monto libre</span>
+        </a>
+      </div>
+      <p class="text-center text-sm text-custom-dark-gray mt-6">
+        Cada peso va directo a la recuperación de la tienda de Alonso.
+      </p>
+    </div>
+  </section>
+
   <!-- La causa -->
   <section class="section-block-sm mantel-bg">
     <div class="container-narrow text-center">
@@ -155,55 +204,6 @@ const jsonLd = {
           <span class="tag-mono tag-mono--accent mt-4">Trae buen apetito</span>
         </article>
       </div>
-    </div>
-  </section>
-
-  <!-- Donaciones -->
-  <section class="section-block" id="donar">
-    <div class="container-mid">
-      <div class="section-title-wrapper">
-        <span class="section-tag">// en vez de regalo</span>
-        <h2 class="section-title-front">Dona para Alonso</h2>
-        <p class="section-title-subtitle">
-          El mejor regalo para mí es ayudarlo a recuperar su tienda. Elige un monto
-          o dona lo que quieras, todo por Mercado Pago.
-        </p>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        {donaciones.map(d => (
-          <a
-            href={d.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            class:list={['service-card p-6 text-center', { 'border-custom-purple-dark': d.destacada }]}
-          >
-            <span class="service-name">{d.destacada ? 'La más elegida' : 'Donación'}</span>
-            <span class="block text-[2em] font-bold leading-none" style="font-family:var(--font-family-titles)">{d.monto}</span>
-            <p class="text-sm text-custom-dark-gray mt-3">{d.desc}</p>
-            <span class="service-link mt-4 justify-center">Donar {d.monto}<span class="btn-arrow btn-arrow--right">→</span></span>
-          </a>
-        ))}
-      </div>
-      <div class="mt-6 text-center">
-        <a
-          href="https://link.mercadopago.cl/cumplefranibe"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="service-card p-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-left"
-        >
-          <div>
-            <span class="service-name">Otro monto</span>
-            <h3 class="text-lg font-semibold">¿Quieres donar otra cantidad?</h3>
-            <p class="text-sm text-custom-dark-gray mt-1">
-              link.mercadopago.cl/cumplefranibe
-            </p>
-          </div>
-          <span class="btn btn-secondary flex-shrink-0">Donar monto libre</span>
-        </a>
-      </div>
-      <p class="text-center text-sm text-custom-dark-gray mt-6">
-        Cada peso va directo a la recuperación de la tienda de Alonso.
-      </p>
     </div>
   </section>
 

@@ -1884,6 +1884,24 @@ button:not(:disabled) {
 /* Ilustración hero tipo sticker levemente rotada */
 .sticker-tilt { transform: rotate(-2.5deg); }
 
+/* Banda destacada para la sección de donaciones */
+.donar-band {
+  background:
+    radial-gradient(42rem 22rem at 50% 0%, rgba(255, 255, 255, 0.75), transparent 70%),
+    linear-gradient(160deg, #fff3e2 0%, #ffe3cf 100%);
+  border-top: 1.5px solid var(--color-border-soft);
+  border-bottom: 1.5px solid var(--color-border-soft);
+}
+.dark .donar-band {
+  background:
+    radial-gradient(42rem 22rem at 50% 0%, rgba(255, 158, 120, 0.07), transparent 70%),
+    linear-gradient(160deg, #2e1a10 0%, #3a2415 100%);
+}
+.donacion-card--destacada {
+  border: 2.5px solid var(--color-custom-purple-dark);
+  box-shadow: 0 16px 36px -14px rgba(194, 53, 31, 0.4);
+}
+
 /* Respeta reduced-motion: desactiva animaciones y transiciones decorativas */
 @media (prefers-reduced-motion: reduce) {
   html, body { scroll-behavior: auto; }
