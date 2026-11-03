@@ -49,7 +49,7 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Event',
   name: 'Cumple Frani: Tallarinata + Bingo a beneficio de Alonso',
-  description: 'Celebración de cumpleaños con tallarinata y bingo. En vez de regalos, donaciones por Mercado Pago para Alonso, que perdió la inversión de su tienda en Pichilemu tras un robo.',
+  description: 'Celebración de cumpleaños con tallarinata vegana y bingo. En vez de regalos, donaciones por Mercado Pago para Alonso, que está reconstruyendo su tienda en Pichilemu tras un robo.',
   startDate: EVENT_DATE_ISO,
   eventStatus: 'https://schema.org/EventScheduled',
   eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
@@ -68,7 +68,7 @@ const jsonLd = {
 
 <BaseLayout
   title="Tallarinata + Bingo | Cumple Frani a beneficio de Alonso"
-  description="Este año mi cumpleaños tiene causa: tallarines, bingo y donaciones por Mercado Pago para Alonso, que perdió la inversión de su tienda en Pichilemu. Viernes 27 de noviembre."
+  description="Este año mi cumpleaños tiene causa: tallarinata vegana, bingo y donaciones por Mercado Pago para Alonso, que está reconstruyendo su tienda en Pichilemu. Viernes 27 de noviembre."
 >
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
@@ -204,18 +204,19 @@ const jsonLd = {
     <div class="container-narrow">
       <div class="section-title-wrapper">
         <span class="section-tag section-tag--basil">// la historia</span>
-        <h2 class="section-title-front">Alonso está partiendo de cero</h2>
+        <h2 class="section-title-front">Alonso está levantando su tienda</h2>
       </div>
       <article class="service-card p-8 lg:p-10">
         <p class="text-custom-dark-gray leading-relaxed">
-          Alonso se fue a Pichilemu e invirtió sus ahorros en una tienda.
-          Un robo se llevó esa inversión completa, y hoy está partiendo de cero.
+          Alonso es de esos amigos que se la juegan: se fue a Pichilemu e invirtió
+          sus ahorros en una tienda. Hace poco le robaron, y aunque el golpe fue duro,
+          ya está trabajando en levantarla de nuevo.
         </p>
         <p class="text-custom-dark-gray leading-relaxed mt-4">
-          Podía quedarme solo con la lata, o hacer lo que sé hacer:
-          juntar gente querida alrededor de una mesa. Así que este cumple
-          tiene una sola condición: <strong class="font-semibold text-custom-black">nada de regalos,
-          todo para Alonso</strong>.
+          Esta fiesta es mi forma de darle un empujón: en vez de regalos,
+          junto a la gente que lo queremos para sumar a su recuperación.
+          <strong class="font-semibold text-custom-black">Comida rica, bingo y buena causa
+          en una misma mesa.</strong>
         </p>
         <p class="text-custom-dark-gray leading-relaxed mt-4">
           Si puedes venir, maravilloso: hay tallarines y bingo. Si no puedes,
