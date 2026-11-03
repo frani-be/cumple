@@ -4,6 +4,29 @@ import EmbroideryPattern from '../components/EmbroideryPattern.astro';
 
 const EVENT_DATE_ISO = '2026-11-27T20:00:00-03:00';
 
+// Banderines de la guirnalda del hero: arco suave sobre el ancho del viewport
+const flagColors = ['#e8492c', '#e8a02c', '#4e8a57', '#f0b28e', '#c2351f'];
+const flags = Array.from({ length: 26 }, (_, i) => {
+  const t = i / 25;
+  return {
+    x: 1200 * t,
+    y: 8 + 144 * t - 144 * t * t,
+    color: flagColors[i % flagColors.length],
+  };
+});
+
+// Confeti flotante del hero
+const confetti = [
+  { top: '26%', left: '12%', bg: '#e8a02c', rot: '18deg', delay: '-1s', round: false },
+  { top: '58%', left: '7%', bg: '#4e8a57', rot: '-24deg', delay: '-2.4s', round: true },
+  { top: '16%', left: '44%', bg: '#e8492c', rot: '30deg', delay: '-3.5s', round: false },
+  { top: '78%', left: '34%', bg: '#f0b28e', rot: '-12deg', delay: '-4.2s', round: true },
+  { top: '10%', left: '72%', bg: '#4e8a57', rot: '42deg', delay: '-0.8s', round: false },
+  { top: '70%', left: '88%', bg: '#e8a02c', rot: '-30deg', delay: '-2s', round: true },
+  { top: '38%', left: '94%', bg: '#e8492c', rot: '15deg', delay: '-5s', round: false },
+  { top: '86%', left: '58%', bg: '#c2351f', rot: '-40deg', delay: '-3s', round: true },
+];
+
 const donaciones = [
   { monto: '$5.000', desc: 'Una porción de tallarines simbólica para Alonso.', href: 'https://mpago.la/2rPVwuB' },
   { monto: '$15.000', desc: 'La tallarinata completa, con bingo incluido.', href: 'https://mpago.la/1Zim2jM', destacada: true },
@@ -62,6 +85,21 @@ const jsonLd = {
 
   <!-- Hero -->
   <header class="hero-home pt-40 pb-24 text-center lg:text-left w-screen relative overflow-hidden isolate">
+    <svg class="banderines" viewBox="0 0 1200 95" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 8 Q600 80 1200 8" fill="none" stroke="#c2351f" stroke-width="3" opacity="0.45" />
+      {flags.map(f => (
+        <path
+          d={`M${(f.x - 11).toFixed(1)} ${(f.y + 2).toFixed(1)} L${(f.x + 11).toFixed(1)} ${(f.y + 2).toFixed(1)} L${f.x.toFixed(1)} ${(f.y + 30).toFixed(1)} Z`}
+          fill={f.color}
+        />
+      ))}
+    </svg>
+    {confetti.map((c, i) => (
+      <span
+        class:list={['confetti-bit', { 'confetti-bit--round': c.round, 'hidden md:block': i > 3 }]}
+        style={`top:${c.top}; left:${c.left}; background:${c.bg}; transform:rotate(${c.rot}); animation-delay:${c.delay}`}
+      />
+    ))}
     <span class="bingo-ball hidden md:flex" style="top:18%; left:5%; animation-delay:-1.5s">B-27</span>
     <span class="bingo-ball bingo-ball--sm bingo-ball--mustard hidden md:flex" style="top:64%; left:3%; animation-delay:-3s">N-11</span>
     <span class="bingo-ball bingo-ball--basil hidden lg:flex" style="top:12%; right:4%; animation-delay:-4.5s">G-52</span>
@@ -77,9 +115,15 @@ const jsonLd = {
           es una donación para mi amigo <strong class="font-semibold text-custom-black">Alonso</strong>.
           Abajo te cuento por qué.
         </p>
-        <p class="mt-5">
-          <span class="tag-mono tag-mono--accent" id="countdown" aria-live="polite">// cargando cuenta regresiva</span>
-        </p>
+        <div class="countdown mt-7" id="countdown" role="timer" aria-label="Cuenta regresiva para la tallarinata">
+          <div class="count-unit"><span class="count-num" data-cd="d">--</span><span class="count-lbl">días</span></div>
+          <span class="count-sep">:</span>
+          <div class="count-unit"><span class="count-num" data-cd="h">--</span><span class="count-lbl">hrs</span></div>
+          <span class="count-sep">:</span>
+          <div class="count-unit"><span class="count-num" data-cd="m">--</span><span class="count-lbl">min</span></div>
+          <span class="count-sep">:</span>
+          <div class="count-unit"><span class="count-num" data-cd="s">--</span><span class="count-lbl">seg</span></div>
+        </div>
         <div class="flex flex-wrap gap-4 mt-8 justify-center lg:justify-start">
           <a href="#donar" class="btn btn-primary">Quiero donar</a>
           <a href="#causa" class="btn btn-secondary">La historia</a>
@@ -164,7 +208,9 @@ const jsonLd = {
           </div>
         </div>
       </div>
-      <p class="text-center text-sm text-custom-dark-gray mt-6">
+      <p class="text-center text-sm text-custom-dark-gray mt-6 flex items-center justify-center gap-2 flex-wrap">
+        Pagos procesados por
+        <span class="mp-badge mp-badge--sm"><img src="/images/mp-handshake.svg" alt="Mercado Pago" /></span>.
         Cada peso va directo a la recuperación de la tienda de Alonso.
       </p>
     </div>
@@ -192,7 +238,7 @@ const jsonLd = {
           Si puedes venir, maravilloso: hay tallarines y bingo. Si no puedes,
           tu donación corre igual de lejos.
         </p>
-        <p class="mt-6 text-custom-purple-dark font-medium italic">un abrazo, Frani</p>
+        <p class="mt-7"><span class="firma">un abrazo, Frani</span></p>
       </article>
     </div>
   </section>
@@ -245,6 +291,9 @@ const jsonLd = {
         <p class="section-title-subtitle">
           Uso Mercado Pago porque acepta casi todo y no necesitas cuenta para pagar.
         </p>
+        <p class="mt-5 flex justify-center">
+          <span class="mp-badge"><img src="/images/mp-handshake.svg" alt="Mercado Pago" /></span>
+        </p>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {beneficiosMP.map(b => (
@@ -286,21 +335,25 @@ const jsonLd = {
   </section>
 
   <script>
-    // Cuenta regresiva al evento
+    // Cuenta regresiva al evento: días : hrs : min : seg
     const target = new Date('2026-11-27T20:00:00-03:00').getTime();
     const el = document.getElementById('countdown');
+    const set = (k: string, v: string) => {
+      const n = el?.querySelector(`[data-cd="${k}"]`);
+      if (n) n.textContent = v;
+    };
     const tick = () => {
-      const diff = target - Date.now();
-      if (!el) return;
-      if (diff <= 0) {
-        el.textContent = '// es hoy, es hoy';
-        return;
-      }
+      const diff = Math.max(0, target - Date.now());
       const days = Math.floor(diff / 86400000);
-      const hours = Math.floor((diff % 86400000) / 3600000);
-      el.textContent = `// faltan ${days} ${days === 1 ? 'día' : 'días'} y ${hours} h`;
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      set('d', String(days).padStart(2, '0'));
+      set('h', String(h).padStart(2, '0'));
+      set('m', String(m).padStart(2, '0'));
+      set('s', String(s).padStart(2, '0'));
     };
     tick();
-    setInterval(tick, 60000);
+    setInterval(tick, 1000);
   </script>
 </BaseLayout>
