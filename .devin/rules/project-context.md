@@ -26,8 +26,9 @@ Landing de invitación al cumpleaños de Frani (`cumple.frani.be`): **tallarinat
   - $15.000 → https://mpago.la/1Zim2jM
   - $30.000 → https://mpago.la/2z3PFd5
   - Monto libre → https://link.mercadopago.cl/cumplefranibe
-- Hora: 20:00. Entrada liberada (la donación reemplaza al regalo). RSVP por WhatsApp (+56 9 4467 8724).
-- Pendiente de confirmar con Frani: lugar/dirección.
+- Hora: 20:00. Entrada liberada (la donación reemplaza al regalo).
+- RSVP: Google Form vinculado a una Sheet de Drive (las respuestas alimentan el cálculo de comida/cartones). La URL del form vive en `src/pages/index.astro` (constante en el CTA del cierre); actualmente placeholder `https://forms.gle/PEGAR-AQUI-TU-FORM`.
+- Pendiente de confirmar con Frani: lugar/dirección, URL real del Google Form.
 
 ## Entorno (importante)
 
