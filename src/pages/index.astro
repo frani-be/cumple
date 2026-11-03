@@ -1,0 +1,273 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EmbroideryPattern from '../components/EmbroideryPattern.astro';
+
+const EVENT_DATE_ISO = '2026-11-27T20:00:00-03:00';
+
+const donaciones = [
+  { monto: '$5.000', desc: 'Una porción de tallarines simbólica para Alonso.', href: 'https://mpago.la/2rPVwuB' },
+  { monto: '$15.000', desc: 'La tallarinata completa, con bingo incluido.', href: 'https://mpago.la/1Zim2jM', destacada: true },
+  { monto: '$30.000', desc: 'Modo generosidad: Alonso te lo agradece doble.', href: 'https://mpago.la/2z3PFd5' },
+];
+
+const beneficiosMP = [
+  {
+    titulo: 'Todos los medios de pago',
+    desc: 'Tarjeta de crédito, débito, prepago o el saldo de tu cuenta de Mercado Pago.',
+    icon: 'M3 8.5A2.5 2.5 0 0 1 5.5 6h13A2.5 2.5 0 0 1 21 8.5v7a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 15.5v-7zM3 10h18M7 14.5h4',
+  },
+  {
+    titulo: 'Puedes pagar en cuotas',
+    desc: 'Con tarjeta de crédito eliges el número de cuotas que te acomode.',
+    icon: 'M8 2v4M16 2v4M3 9h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM9 14l2 2 4-4',
+  },
+  {
+    titulo: 'Sin cuenta, sin drama',
+    desc: 'No necesitas estar registrado en Mercado Pago: pagas como invitado con tus datos.',
+    icon: 'M13 3L4 14h6l-1 7 9-11h-6l1-7z',
+  },
+  {
+    titulo: 'Pago protegido',
+    desc: 'Tus datos viajan cifrados y tu plata llega directo. Recibes comprobante al instante.',
+    icon: 'M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4zM9 12l2 2 4-4',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: 'Cumple Frani: Tallarinata + Bingo a beneficio de Alonso',
+  description: 'Celebración de cumpleaños con tallarinata y bingo. En vez de regalos, donaciones por Mercado Pago para Alonso, que perdió la inversión de su tienda en Pichilemu tras un robo.',
+  startDate: EVENT_DATE_ISO,
+  eventStatus: 'https://schema.org/EventScheduled',
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  location: {
+    '@type': 'Place',
+    name: 'Por confirmar',
+    address: { '@type': 'PostalAddress', addressCountry: 'CL' },
+  },
+  organizer: {
+    '@type': 'Person',
+    name: 'Francisca Beatriz Medina Concha',
+    url: 'https://frani.be/',
+  },
+};
+---
+
+<BaseLayout
+  title="Tallarinata + Bingo | Cumple Frani a beneficio de Alonso"
+  description="Este año mi cumpleaños tiene causa: tallarines, bingo y donaciones por Mercado Pago para Alonso, que perdió la inversión de su tienda en Pichilemu. Viernes 27 de noviembre."
+>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <!-- Hero -->
+  <header class="hero-home pt-40 pb-24 text-center lg:text-left w-screen relative overflow-hidden isolate">
+    <div class="container-wide flex flex-col lg:flex-row gap-12 items-center relative z-[1]">
+      <div class="w-full lg:w-3/5">
+        <p class="hero-eyebrow">Viernes 27 de noviembre</p>
+        <h1 class="mt-6 text-custom-black leading-[0.95]">
+          <span class="block text-[1.05em] lg:text-[1.2em] font-medium">Mi cumple es</span>
+          <span class="text-gradient block text-[2.4em] lg:text-[3em]">Tallarinata + Bingo</span>
+        </h1>
+        <p class="text-[1.15em] mt-5 text-custom-dark-gray max-w-[34rem] mx-auto lg:mx-0">
+          Este año lo celebro con causa: pastas, cartones y premios, y en vez de regalo
+          te pido una donación para mi amigo <strong class="font-semibold text-custom-black">Alonso</strong>,
+          que perdió la inversión de su tienda en Pichilemu tras un robo.
+        </p>
+        <p class="mt-5">
+          <span class="tag-mono tag-mono--accent" id="countdown" aria-live="polite">// cargando cuenta regresiva</span>
+        </p>
+        <div class="flex flex-wrap gap-4 mt-8 justify-center lg:justify-start">
+          <a href="#donar" class="btn btn-primary">Quiero donar</a>
+          <a href="#detalles" class="btn btn-secondary">Ver el panorama</a>
+        </div>
+      </div>
+
+      <div class="relative flex flex-col gap-6 items-center w-full lg:w-2/5">
+        <EmbroideryPattern class="absolute -top-8 right-0 lg:-right-8 rotate-6" cells={5} />
+        <figure class="hero-photo-wrap">
+          <img
+            src="/images/tallarinata.svg"
+            alt="Ilustración de un plato de tallarines junto a un cartón y bolillas de bingo"
+            id="main-image"
+            class="illus-frame"
+            loading="eager"
+            decoding="async"
+          />
+        </figure>
+      </div>
+    </div>
+  </header>
+
+  <!-- La causa -->
+  <section class="section-block-sm">
+    <div class="container-narrow text-center">
+      <div class="section-title-wrapper">
+        <span class="section-tag">// la causa</span>
+        <h2 class="section-title-front">Por qué este cumple es distinto</h2>
+      </div>
+      <p class="text-custom-dark-gray leading-relaxed">
+        Alonso invirtió sus ahorros en su tienda en Pichilemu. Un robo se llevó esa inversión
+        y ahora está partiendo de cero. En vez de regalos de cumpleaños, lo que más me
+        gustaría es juntar lucas para ayudarlo a levantarse de nuevo.
+      </p>
+      <p class="text-custom-dark-gray leading-relaxed mt-4">
+        Así que el plan es simple: <strong class="font-semibold text-custom-black">comes tallarines,
+        juegas bingo y donas lo que puedas</strong>. Todo lo recaudado va directo para él.
+      </p>
+    </div>
+  </section>
+
+  <!-- Detalles -->
+  <section class="section-block-sm" id="detalles">
+    <div class="container-mid">
+      <div class="section-title-wrapper">
+        <span class="section-tag">// el panorama</span>
+        <h2 class="section-title-front">Cuándo, dónde y qué</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <article class="service-card p-6">
+          <span class="service-name">Cuándo</span>
+          <h3 class="text-lg font-semibold">Viernes 27 de noviembre</h3>
+          <p class="text-sm text-custom-dark-gray mt-2">
+            Partimos en la tardecita. La hora exacta la confirmo pronto por acá y por WhatsApp.
+          </p>
+          <span class="tag-mono mt-4">Hora por confirmar</span>
+        </article>
+        <article class="service-card p-6">
+          <span class="service-name">Dónde</span>
+          <h3 class="text-lg font-semibold">Lugar por confirmar</h3>
+          <p class="text-sm text-custom-dark-gray mt-2">
+            Estoy cerrando el lugar. Te aviso con anticipación para que agendes.
+          </p>
+          <span class="tag-mono mt-4">Dirección por confirmar</span>
+        </article>
+        <article class="service-card p-6">
+          <span class="service-name">Qué hay</span>
+          <h3 class="text-lg font-semibold">Tallarines + bingo</h3>
+          <p class="text-sm text-custom-dark-gray mt-2">
+            Tallarinata casera, rondas de bingo con premios y buena sobremesa.
+          </p>
+          <span class="tag-mono mt-4">Trae buen apetito</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Donaciones -->
+  <section class="section-block" id="donar">
+    <div class="container-mid">
+      <div class="section-title-wrapper">
+        <span class="section-tag">// en vez de regalo</span>
+        <h2 class="section-title-front">Dona para Alonso</h2>
+        <p class="section-title-subtitle">
+          El mejor regalo para mí es ayudarlo a recuperar su tienda. Elige un monto
+          o dona lo que quieras, todo por Mercado Pago.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        {donaciones.map(d => (
+          <a
+            href={d.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class:list={['service-card p-6 text-center', { 'border-custom-purple-dark': d.destacada }]}
+          >
+            <span class="service-name">{d.destacada ? 'La más elegida' : 'Donación'}</span>
+            <span class="block text-[2em] font-bold leading-none" style="font-family:var(--font-family-titles)">{d.monto}</span>
+            <p class="text-sm text-custom-dark-gray mt-3">{d.desc}</p>
+            <span class="service-link mt-4 justify-center">Donar {d.monto}<span class="btn-arrow btn-arrow--right">→</span></span>
+          </a>
+        ))}
+      </div>
+      <div class="mt-6 text-center">
+        <a
+          href="https://link.mercadopago.cl/cumplefranibe"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="service-card p-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-left"
+        >
+          <div>
+            <span class="service-name">Otro monto</span>
+            <h3 class="text-lg font-semibold">¿Quieres donar otra cantidad?</h3>
+            <p class="text-sm text-custom-dark-gray mt-1">
+              link.mercadopago.cl/cumplefranibe
+            </p>
+          </div>
+          <span class="btn btn-secondary flex-shrink-0">Donar monto libre</span>
+        </a>
+      </div>
+      <p class="text-center text-sm text-custom-dark-gray mt-6">
+        Cada peso va directo a la recuperación de la tienda de Alonso.
+      </p>
+    </div>
+  </section>
+
+  <!-- Beneficios Mercado Pago -->
+  <section class="section-block-sm">
+    <div class="container-mid">
+      <div class="section-title-wrapper">
+        <span class="section-tag">// pagar es fácil</span>
+        <h2 class="section-title-front">Por qué Mercado Pago</h2>
+        <p class="section-title-subtitle">
+          Elegí Mercado Pago para que donar te tome dos minutos, como quieras y con total seguridad.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {beneficiosMP.map(b => (
+          <div class="flex items-start gap-4">
+            <span class="icon-tile icon-tile-lg" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d={b.icon} />
+              </svg>
+            </span>
+            <div>
+              <h3 class="font-semibold">{b.titulo}</h3>
+              <p class="text-sm text-custom-dark-gray mt-1">{b.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Cierre / RSVP -->
+  <section class="page-hero text-center">
+    <div class="container-narrow py-16 lg:py-20">
+      <span class="section-tag section-tag--dark">// nos vemos</span>
+      <h2 class="section-title-front section-title-front--dark">¿Vienes a la tallarinata?</h2>
+      <p class="section-title-subtitle section-title-subtitle--dark">
+        Confírmame por WhatsApp para calcular cuántos tallarines cocinar
+        (y cuántos cartones de bingo imprimir).
+      </p>
+      <div class="flex flex-wrap gap-4 mt-8 justify-center">
+        <a
+          href="https://wa.me/56944678724?text=%C2%A1Voy%20a%20la%20tallarinata%20%2B%20bingo%21"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-white"
+        >Confirmar por WhatsApp</a>
+        <a href="#donar" class="btn btn-outline-white">Ir a donar</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Cuenta regresiva al evento
+    const target = new Date('2026-11-27T20:00:00-03:00').getTime();
+    const el = document.getElementById('countdown');
+    const tick = () => {
+      const diff = target - Date.now();
+      if (!el) return;
+      if (diff <= 0) {
+        el.textContent = '// es hoy, es hoy';
+        return;
+      }
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      el.textContent = `// faltan ${days} ${days === 1 ? 'día' : 'días'} y ${hours} h`;
+    };
+    tick();
+    setInterval(tick, 60000);
+  </script>
+</BaseLayout>
