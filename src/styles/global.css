@@ -1986,9 +1986,9 @@ button:not(:disabled) {
   border-radius: var(--radius-input);
   padding: 0.65rem 0.9rem;
 }
-.mp-badge img { display: block; height: 2.4rem; width: auto; }
+.mp-badge img { display: block; height: 3rem; width: auto; }
 .mp-badge--sm { padding: 0.4rem 0.6rem; border-radius: 0.6rem; }
-.mp-badge--sm img { height: 1.35rem; }
+.mp-badge--sm img { height: 1.7rem; }
 
 /* Respeta reduced-motion: desactiva animaciones y transiciones decorativas */
 @media (prefers-reduced-motion: reduce) {
