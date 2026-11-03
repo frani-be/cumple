@@ -26,7 +26,8 @@ Landing de invitación al cumpleaños de Frani (`cumple.frani.be`): **tallarinat
   - $15.000 → https://mpago.la/1Zim2jM
   - $30.000 → https://mpago.la/2z3PFd5
   - Monto libre → https://link.mercadopago.cl/cumplefranibe
-- Pendiente de confirmar con Frani: hora, lugar/dirección, forma de RSVP, meta de recaudación.
+- Hora: 20:00. Entrada liberada (la donación reemplaza al regalo). RSVP por WhatsApp (+56 9 4467 8724).
+- Pendiente de confirmar con Frani: lugar/dirección.
 
 ## Entorno (importante)
 

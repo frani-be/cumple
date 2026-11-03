@@ -62,6 +62,9 @@ const jsonLd = {
 
   <!-- Hero -->
   <header class="hero-home pt-40 pb-24 text-center lg:text-left w-screen relative overflow-hidden isolate">
+    <span class="bingo-ball hidden md:flex" style="top:18%; left:5%; animation-delay:-1.5s">B-27</span>
+    <span class="bingo-ball bingo-ball--sm bingo-ball--mustard hidden md:flex" style="top:64%; left:3%; animation-delay:-3s">N-11</span>
+    <span class="bingo-ball bingo-ball--basil hidden lg:flex" style="top:12%; right:4%; animation-delay:-4.5s">G-52</span>
     <div class="container-wide flex flex-col lg:flex-row gap-12 items-center relative z-[1]">
       <div class="w-full lg:w-3/5">
         <p class="hero-eyebrow">Viernes 27 de noviembre</p>
@@ -85,7 +88,7 @@ const jsonLd = {
 
       <div class="relative flex flex-col gap-6 items-center w-full lg:w-2/5">
         <EmbroideryPattern class="absolute -top-8 right-0 lg:-right-8 rotate-6" cells={5} />
-        <figure class="hero-photo-wrap">
+        <figure class="hero-photo-wrap sticker-tilt">
           <img
             src="/images/tallarinata.svg"
             alt="Ilustración de un plato de tallarines junto a un cartón y bolillas de bingo"
@@ -100,10 +103,10 @@ const jsonLd = {
   </header>
 
   <!-- La causa -->
-  <section class="section-block-sm">
+  <section class="section-block-sm mantel-bg">
     <div class="container-narrow text-center">
       <div class="section-title-wrapper">
-        <span class="section-tag">// la causa</span>
+        <span class="section-tag section-tag--basil">// la causa</span>
         <h2 class="section-title-front">Por qué este cumple es distinto</h2>
       </div>
       <p class="text-custom-dark-gray leading-relaxed">
@@ -113,7 +116,8 @@ const jsonLd = {
       </p>
       <p class="text-custom-dark-gray leading-relaxed mt-4">
         Así que el plan es simple: <strong class="font-semibold text-custom-black">comes tallarines,
-        juegas bingo y donas lo que puedas</strong>. Todo lo recaudado va directo para él.
+        juegas bingo y donas lo que puedas</strong>. La entrada es liberada: tu donación
+        es el regalo, y todo lo recaudado va directo para él.
       </p>
     </div>
   </section>
@@ -122,7 +126,7 @@ const jsonLd = {
   <section class="section-block-sm" id="detalles">
     <div class="container-mid">
       <div class="section-title-wrapper">
-        <span class="section-tag">// el panorama</span>
+        <span class="section-tag section-tag--mustard">// el panorama</span>
         <h2 class="section-title-front">Cuándo, dónde y qué</h2>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -130,9 +134,9 @@ const jsonLd = {
           <span class="service-name">Cuándo</span>
           <h3 class="text-lg font-semibold">Viernes 27 de noviembre</h3>
           <p class="text-sm text-custom-dark-gray mt-2">
-            Partimos en la tardecita. La hora exacta la confirmo pronto por acá y por WhatsApp.
+            Desde las 20:00 hrs: primero tallarinata, después el bingo.
           </p>
-          <span class="tag-mono mt-4">Hora por confirmar</span>
+          <span class="tag-mono tag-mono--basil mt-4">Entrada liberada</span>
         </article>
         <article class="service-card p-6">
           <span class="service-name">Dónde</span>
@@ -148,7 +152,7 @@ const jsonLd = {
           <p class="text-sm text-custom-dark-gray mt-2">
             Tallarinata casera, rondas de bingo con premios y buena sobremesa.
           </p>
-          <span class="tag-mono mt-4">Trae buen apetito</span>
+          <span class="tag-mono tag-mono--accent mt-4">Trae buen apetito</span>
         </article>
       </div>
     </div>
