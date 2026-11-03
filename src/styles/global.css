@@ -1984,10 +1984,10 @@ button:not(:disabled) {
   justify-content: center;
   background: #00b1ea;
   border-radius: var(--radius-input);
-  padding: 0.65rem 0.9rem;
+  padding: 0.3rem 0.5rem;
 }
 .mp-badge img { display: block; height: 3rem; width: auto; }
-.mp-badge--sm { padding: 0.4rem 0.6rem; border-radius: 0.6rem; }
+.mp-badge--sm { padding: 0.2rem 0.35rem; border-radius: 0.6rem; }
 .mp-badge--sm img { height: 1.7rem; }
 
 /* Respeta reduced-motion: desactiva animaciones y transiciones decorativas */
