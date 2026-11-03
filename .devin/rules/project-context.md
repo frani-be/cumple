@@ -27,8 +27,8 @@ Landing de invitación al cumpleaños de Frani (`cumple.frani.be`): **tallarinat
   - $30.000 → https://mpago.la/2z3PFd5
   - Monto libre → https://link.mercadopago.cl/cumplefranibe
 - Hora: 20:00. Entrada liberada (la donación reemplaza al regalo).
-- RSVP: Google Form vinculado a una Sheet de Drive (las respuestas alimentan el cálculo de comida/cartones). La URL del form vive en `src/pages/index.astro` (constante en el CTA del cierre); actualmente placeholder `https://forms.gle/PEGAR-AQUI-TU-FORM`.
-- Pendiente de confirmar con Frani: lugar/dirección, URL real del Google Form.
+- RSVP: formulario embebido en la sección de cierre que hace POST (`no-cors`) a un Google Apps Script web app, que escribe en una Sheet de Drive. El código está en `apps-script/Code.gs`; el endpoint vive en la constante `RSVP_ENDPOINT` de `src/pages/index.astro` (placeholder `PEGAR-TU-EXEC`).
+- Pendiente de confirmar con Frani: lugar/dirección, URL real del Apps Script `/exec`.
 
 ## Entorno (importante)
 

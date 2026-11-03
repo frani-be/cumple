@@ -1977,6 +1977,96 @@ button:not(:disabled) {
   user-select: none;
 }
 
+/* ── Formulario RSVP embebido ── */
+.rsvp-card {
+  max-width: 33rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+.form-field { margin-bottom: 1.25rem; }
+.form-field:last-of-type { margin-bottom: 0; }
+.form-label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.45rem;
+  color: var(--color-custom-black);
+}
+.form-label .opt {
+  font-weight: 400;
+  font-size: 0.8rem;
+  color: var(--color-custom-dark-gray);
+}
+.form-input,
+.form-select {
+  width: 100%;
+  padding: 0.75rem 1.1rem;
+  border-radius: var(--radius-input);
+  border: 1.5px solid var(--color-border-soft);
+  background: var(--color-surface);
+  color: var(--color-custom-black);
+  font-family: var(--font-family-primary);
+  font-size: 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-input::placeholder { color: var(--color-custom-dark-gray); opacity: 0.65; }
+.form-input:focus,
+.form-select:focus {
+  outline: none;
+  border-color: var(--color-custom-purple);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-custom-purple) 15%, transparent);
+}
+.dark .form-input,
+.dark .form-select { border-color: var(--color-border-soft); }
+
+/* Opciones tipo píldora (radio pills) */
+.form-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.form-pill { position: relative; }
+.form-pill input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+.form-pill span {
+  display: inline-block;
+  font-size: 0.88rem;
+  font-weight: 500;
+  padding: 0.5rem 1.15rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--color-border-soft);
+  background: var(--color-surface);
+  color: var(--color-custom-dark-gray);
+  transition: all 0.2s ease;
+}
+.form-pill:hover span { border-color: var(--color-border-hover); }
+.form-pill input:checked + span {
+  background: var(--color-custom-purple-dark);
+  border-color: var(--color-custom-purple-dark);
+  color: #fff;
+}
+.form-pill input:focus-visible + span {
+  outline: 2px solid var(--color-custom-purple);
+  outline-offset: 2px;
+}
+
+/* Honeypot: invisible para humanos */
+.form-hp { position: absolute; left: -9999px; opacity: 0; height: 0; }
+
+.form-status {
+  margin-top: 0.9rem;
+  font-size: 0.85rem;
+  font-family: var(--font-family-mono);
+  text-align: center;
+}
+.form-status--err { color: #dc2626; }
+.rsvp-done {
+  text-align: center;
+  padding: 1rem 0;
+}
+.rsvp-done .firma { font-size: 2.2rem; }
+
 /* Logo Mercado Pago: el asset es blanco, va sobre su azul de marca */
 .mp-badge {
   display: inline-flex;

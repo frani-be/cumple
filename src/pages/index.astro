@@ -302,18 +302,61 @@ const jsonLd = {
       <span class="section-tag section-tag--dark">// nos vemos</span>
       <h2 class="section-title-front section-title-front--dark">El 27 nos vemos</h2>
       <p class="section-title-subtitle section-title-subtitle--dark">
-        Confirma tu asistencia en el formulario así calculo cuántos tallarines
-        cocinar (y cuántos cartones imprimir). Si no puedes venir, la donación corre igual.
+        Apúntate acá así calculo cuántos tallarines cocinar
+        (y cuántos cartones imprimir). Si no puedes venir, la donación corre igual.
       </p>
-      <div class="flex flex-wrap gap-4 mt-8 justify-center">
-        <a
-          href="https://forms.gle/PEGAR-AQUI-TU-FORM"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn btn-white"
-        >Confirmar mi asistencia</a>
+      <form id="rsvp-form" class="service-card rsvp-card p-6 lg:p-8 mt-9 text-left" novalidate>
+        <span class="service-name">Confirmación</span>
+
+        <div class="form-field mt-4">
+          <label class="form-label" for="f-nombre">Tu nombre</label>
+          <input class="form-input" id="f-nombre" name="nombre" type="text" required placeholder="¿Quién eres?" autocomplete="name" />
+        </div>
+
+        <div class="form-field">
+          <span class="form-label" id="lbl-vienes">¿Vienes?</span>
+          <div class="form-pills" role="radiogroup" aria-labelledby="lbl-vienes">
+            <label class="form-pill"><input type="radio" name="vienes" value="si" required /><span>Sí, voy</span></label>
+            <label class="form-pill"><input type="radio" name="vienes" value="quizas" /><span>Tal vez</span></label>
+            <label class="form-pill"><input type="radio" name="vienes" value="no" /><span>No puedo</span></label>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="f-personas">¿Cuántos platos de tallarines? <span class="opt">(incluyéndote)</span></label>
+          <select class="form-select" id="f-personas" name="personas" required>
+            <option value="" selected disabled>Elige</option>
+            <option value="1">1 (solo yo)</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5+">5 o más</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="f-restricciones">Restricciones alimentarias <span class="opt">(opcional)</span></label>
+          <input class="form-input" id="f-restricciones" name="restricciones" type="text" placeholder="Vegetariano, celíaco, ninguna..." />
+        </div>
+
+        <div class="form-field">
+          <span class="form-label" id="lbl-bingo">¿Quieres cartón de bingo?</span>
+          <div class="form-pills" role="radiogroup" aria-labelledby="lbl-bingo">
+            <label class="form-pill"><input type="radio" name="bingo" value="si" required /><span>Sí, obvio</span></label>
+            <label class="form-pill"><input type="radio" name="bingo" value="no" /><span>No, solo a comer</span></label>
+          </div>
+        </div>
+
+        <div class="form-hp" aria-hidden="true">
+          <label>No llenar: <input type="text" name="empresa" tabindex="-1" autocomplete="off" /></label>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-full mt-6">Confirmar asistencia</button>
+        <p class="form-status" id="rsvp-status" role="status" aria-live="polite"></p>
+      </form>
+      <p class="mt-6">
         <a href="#donar" class="btn btn-outline-white">Ir a donar</a>
-      </div>
+      </p>
     </div>
   </section>
 
@@ -338,5 +381,43 @@ const jsonLd = {
     };
     tick();
     setInterval(tick, 1000);
+
+    // RSVP: envía al Apps Script que escribe en la Sheet de Drive
+    const RSVP_ENDPOINT = 'https://script.google.com/macros/s/PEGAR-TU-EXEC/exec';
+    const form = document.getElementById('rsvp-form') as HTMLFormElement | null;
+    const status = document.getElementById('rsvp-status');
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Enviando...';
+      }
+      try {
+        await fetch(RSVP_ENDPOINT, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: new FormData(form),
+        });
+        form.innerHTML = `
+          <div class="rsvp-done">
+            <p class="firma">¡anotade!</p>
+            <p class="text-sm text-custom-dark-gray mt-3">Gracias por confirmar. Te espero el 27 con tallarines y cartones.</p>
+          </div>`;
+      } catch {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = 'Confirmar asistencia';
+        }
+        if (status) {
+          status.textContent = '// ups, algo falló. Intenta de nuevo.';
+          status.classList.add('form-status--err');
+        }
+      }
+    });
   </script>
 </BaseLayout>
