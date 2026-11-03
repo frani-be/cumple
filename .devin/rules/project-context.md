@@ -28,7 +28,7 @@ Landing de invitación al cumpleaños de Frani (`cumple.frani.be`): **tallarinat
   - Monto libre → https://link.mercadopago.cl/cumplefranibe
 - Hora: 20:00. Entrada liberada (la donación reemplaza al regalo). La tallarinata es 100% vegana.
 - RSVP campos: nombre, email (invitación Google Calendar), whatsapp (recordatorio), vienes (si/quizas), amigos (desplegable 0 a 4+), tiene_rest (si/no, si "si" muestra input restricciones).
-- RSVP: formulario embebido en la sección de cierre que hace POST (`no-cors`) a un Google Apps Script web app, que escribe en una Sheet de Drive. El código está en `apps-script/Code.gs`; el endpoint vive en la constante `RSVP_ENDPOINT` de `src/pages/index.astro` (placeholder `PEGAR-TU-EXEC`).
+- RSVP: formulario embebido en la sección de cierre que hace POST (`no-cors`) al Google Apps Script web app (desplegado, endpoint real en `RSVP_ENDPOINT` de `src/pages/index.astro`), que escribe en la pestaña "Respuestas" de una Sheet de Drive. El código está en `apps-script/Code.gs`.
 - Pendiente de confirmar con Frani: lugar/dirección, URL real del Apps Script `/exec`.
 
 ## Entorno (importante)
