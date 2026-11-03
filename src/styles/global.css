@@ -1906,7 +1906,7 @@ button:not(:disabled) {
 /* ── Cumpleaños: guirnalda, confeti, firma, cuenta regresiva, logo MP ── */
 .banderines {
   position: absolute;
-  top: -4px;
+  top: 4.6rem;
   left: 0;
   width: 100%;
   height: auto;
