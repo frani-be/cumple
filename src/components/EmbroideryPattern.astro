@@ -1,0 +1,25 @@
+---
+interface Props {
+  class?: string;
+  cells?: number;
+}
+
+const { class: extraClass = '', cells = 6 } = Astro.props;
+const step = 16;
+const size = cells * step;
+const crosses = Array.from({ length: cells * cells }, (_, i) => ({
+  x: (i % cells) * step + step / 2,
+  y: Math.floor(i / cells) * step + step / 2,
+}));
+---
+
+<svg
+  class:list={['embroidery', extraClass]}
+  viewBox={`0 0 ${size} ${size}`}
+  width={size}
+  height={size}
+  aria-hidden="true"
+  role="presentation"
+>
+  {crosses.map(c => <path d={`M${c.x} ${c.y - 4}v8M${c.x - 4} ${c.y}h8`} />)}
+</svg>

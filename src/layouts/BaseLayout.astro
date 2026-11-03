@@ -1,0 +1,162 @@
+---
+import '../styles/global.css';
+import EmbroideryPattern from '../components/EmbroideryPattern.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description = 'Tallarinata + bingo por mi cumpleaños, a beneficio de Alonso. En vez de regalo, dona por Mercado Pago.',
+  ogImage = 'https://cumple.frani.be/images/og-cumple.png',
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://cumple.frani.be').href;
+---
+
+<!doctype html>
+<html lang="es" class="overflow-x-hidden">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="author" content="Francisca Beatriz Medina Concha" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_CL" />
+    <meta property="og:site_name" content="cumple.frani.be" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalUrl} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Tema: aplicar clase antes del primer paint para evitar FOUC -->
+    <meta name="theme-color" content="#faf8fc" />
+    <script is:inline>
+      (function () {
+        var t = localStorage.getItem('theme');
+        var dark = t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches);
+        if (dark) {
+          document.documentElement.classList.add('dark');
+          document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#17101f');
+        }
+      })();
+    </script>
+
+    <!-- Favicons -->
+    <link href="/favicons/apple-touch-icon-76x76.png" rel="apple-touch-icon" sizes="76x76" />
+    <link href="/favicons/apple-touch-icon-120x120.png" rel="apple-touch-icon" sizes="120x120" />
+    <link href="/favicons/apple-touch-icon-152x152.png" rel="apple-touch-icon" sizes="152x152" />
+    <link href="/favicons/apple-touch-icon-180x180.png" rel="apple-touch-icon" sizes="180x180" />
+    <link href="/favicons/icon-hires.png" rel="icon" sizes="192x192" />
+    <link href="/favicons/icon-normal.png" rel="icon" sizes="128x128" />
+    <link href="/favicons/icon.svg" rel="mask-icon" sizes="any" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <slot name="head" />
+  </head>
+
+  <body class="overflow-x-hidden font-primary font-light text-custom-black text-base lg:text-lg">
+    <a href="#contenido" class="skip-link">Saltar al contenido</a>
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-1/2 -translate-x-1/2 w-full py-4 pb-6 z-[3] overflow-visible" id="navigation" aria-label="Navegación principal">
+      <div class="w-full px-8 mx-auto max-w-[540px] sm:max-w-[722px] md:max-w-[900px] lg:max-w-[1220px] xl:max-w-[1380px] flex items-center justify-between gap-6">
+        <div class="logo-container">
+          <a href="/" aria-label="Ir al inicio">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 70.3">
+              <use href="/images/icons.svg#logo"></use>
+            </svg>
+          </a>
+        </div>
+        <div class="flex items-center gap-2">
+          <a href="#donar" class="btn btn-primary" style="padding:0.55rem 1.4rem">Donar</a>
+          <button
+            id="theme-toggle"
+            class="flex items-center justify-center w-10 h-10 rounded-full text-custom-dark-gray hover:text-custom-purple hover:bg-custom-purple/10 transition-all"
+            aria-label="Cambiar tema"
+            aria-pressed="false"
+          >
+            <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+            </svg>
+            <svg class="icon-sun hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <main id="contenido">
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-gradient-footer text-white relative overflow-hidden">
+      <div class="container-wide text-center relative z-[1]">
+        <EmbroideryPattern class="embroidery--light mx-auto mb-5" cells={4} />
+        <p class="text-[0.75em] opacity-90">
+          © <span id="current-year"></span> frani.be
+        </p>
+        <p class="site-signature">// hecho con código, tallarines y bingo</p>
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById('current-year')!.textContent = String(new Date().getFullYear());
+
+      const nav = document.getElementById('navigation');
+      const updateNavBg = () => {
+        nav?.classList.toggle('nav-scrolled', window.scrollY > 24);
+      };
+      updateNavBg();
+      window.addEventListener('scroll', updateNavBg, { passive: true });
+
+      // Tema claro/oscuro
+      const themeToggle = document.getElementById('theme-toggle');
+      const syncThemeIcon = () => {
+        const dark = document.documentElement.classList.contains('dark');
+        themeToggle?.querySelector('.icon-moon')?.classList.toggle('hidden', dark);
+        themeToggle?.querySelector('.icon-sun')?.classList.toggle('hidden', !dark);
+        themeToggle?.setAttribute('aria-pressed', String(dark));
+        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#17101f' : '#faf8fc');
+      };
+      syncThemeIcon();
+      themeToggle?.addEventListener('click', () => {
+        const dark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', dark ? 'dark' : 'light');
+        syncThemeIcon();
+      });
+
+      // Si el usuario no eligió tema, seguir cambios del sistema en vivo
+      matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (localStorage.getItem('theme')) return;
+        document.documentElement.classList.toggle('dark', e.matches);
+        syncThemeIcon();
+      });
+    </script>
+  </body>
+</html>
