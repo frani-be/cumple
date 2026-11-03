@@ -1,12 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 64" preserveAspectRatio="none" aria-hidden="true">
-  <rect x="0" y="3" width="1200" height="6" rx="3" fill="#d98a72"/>
-  <path d="M60.0 9 L148.0 9 L104.0 59 Z" fill="#4e8a57"/>
-  <path d="M184.0 9 L272.0 9 L228.0 59 Z" fill="#f0b28e"/>
-  <path d="M308.0 9 L396.0 9 L352.0 59 Z" fill="#c2351f"/>
-  <path d="M432.0 9 L520.0 9 L476.0 59 Z" fill="#e8492c"/>
-  <path d="M556.0 9 L644.0 9 L600.0 59 Z" fill="#e8a02c"/>
-  <path d="M680.0 9 L768.0 9 L724.0 59 Z" fill="#4e8a57"/>
-  <path d="M804.0 9 L892.0 9 L848.0 59 Z" fill="#f0b28e"/>
-  <path d="M928.0 9 L1016.0 9 L972.0 59 Z" fill="#c2351f"/>
-  <path d="M1052.0 9 L1140.0 9 L1096.0 59 Z" fill="#e8492c"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 130" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0.0 15.0 Q600.0 115.0 1200.0 15.0" fill="none" stroke="#d98a72" stroke-width="5" stroke-linecap="round"/>
+  <path d="M2.3 15.5 L57.7 24.3 L23.4 61.4 Z" fill="#4e8a57"/>
+  <path d="M73.5 26.6 L129.0 34.3 L95.5 72.1 Z" fill="#f0b28e"/>
+  <path d="M144.7 36.3 L200.3 42.9 L167.5 81.3 Z" fill="#c2351f"/>
+  <path d="M215.9 44.6 L271.6 50.1 L239.6 89.2 Z" fill="#e8492c"/>
+  <path d="M287.1 51.5 L342.9 55.9 L311.7 95.6 Z" fill="#e8a02c"/>
+  <path d="M358.3 57.0 L414.2 60.3 L383.8 100.6 Z" fill="#4e8a57"/>
+  <path d="M429.5 61.1 L485.5 63.3 L455.8 104.1 Z" fill="#f0b28e"/>
+  <path d="M500.8 63.7 L556.7 64.8 L527.9 106.3 Z" fill="#c2351f"/>
+  <path d="M572.0 65.0 L628.0 65.0 L600.0 107.0 Z" fill="#e8492c"/>
+  <path d="M643.3 64.8 L699.2 63.7 L672.1 106.3 Z" fill="#e8a02c"/>
+  <path d="M714.5 63.3 L770.5 61.1 L744.2 104.1 Z" fill="#4e8a57"/>
+  <path d="M785.8 60.3 L841.7 57.0 L816.2 100.6 Z" fill="#f0b28e"/>
+  <path d="M857.1 55.9 L912.9 51.5 L888.3 95.6 Z" fill="#c2351f"/>
+  <path d="M928.4 50.1 L984.1 44.6 L960.4 89.2 Z" fill="#e8492c"/>
+  <path d="M999.7 42.9 L1055.3 36.3 L1032.5 81.3 Z" fill="#e8a02c"/>
+  <path d="M1071.0 34.3 L1126.5 26.6 L1104.5 72.1 Z" fill="#4e8a57"/>
+  <path d="M1142.3 24.3 L1197.7 15.5 L1176.6 61.4 Z" fill="#f0b28e"/>
 </svg>
