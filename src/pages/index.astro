@@ -302,8 +302,8 @@ const jsonLd = {
       <span class="section-tag section-tag--dark">// nos vemos</span>
       <h2 class="section-title-front section-title-front--dark">El 27 nos vemos</h2>
       <p class="section-title-subtitle section-title-subtitle--dark">
-        Apúntate acá así calculo cuántos tallarines cocinar
-        (y cuántos cartones imprimir). Si no puedes venir, la donación corre igual.
+        Apúntate con tu correo así te mando la invitación de calendario
+        (y calculo tallarines y cartones). Si no puedes venir, la donación corre igual.
       </p>
       <form id="rsvp-form" class="service-card rsvp-card p-6 lg:p-8 mt-9 text-left" novalidate>
         <span class="service-name">Confirmación</span>
@@ -311,6 +311,11 @@ const jsonLd = {
         <div class="form-field mt-4">
           <label class="form-label" for="f-nombre">Tu nombre</label>
           <input class="form-input" id="f-nombre" name="nombre" type="text" required placeholder="¿Quién eres?" autocomplete="name" />
+        </div>
+
+        <div class="form-field mt-4">
+          <label class="form-label" for="f-email">Tu correo <span class="opt">(para la invitación de calendario)</span></label>
+          <input class="form-input" id="f-email" name="email" type="email" required placeholder="tu@correo.cl" autocomplete="email" />
         </div>
 
         <div class="form-field">
@@ -323,20 +328,19 @@ const jsonLd = {
         </div>
 
         <div class="form-field">
-          <label class="form-label" for="f-personas">¿Cuántos platos de tallarines? <span class="opt">(incluyéndote)</span></label>
-          <select class="form-select" id="f-personas" name="personas" required>
-            <option value="" selected disabled>Elige</option>
-            <option value="1">1 (solo yo)</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5+">5 o más</option>
-          </select>
+          <span class="form-label" id="lbl-amigos">¿Vienes con amigues?</span>
+          <div class="form-pills" role="radiogroup" aria-labelledby="lbl-amigos">
+            <label class="form-pill"><input type="radio" name="amigos" value="0" required /><span>Solo yo</span></label>
+            <label class="form-pill"><input type="radio" name="amigos" value="1" /><span>+1</span></label>
+            <label class="form-pill"><input type="radio" name="amigos" value="2" /><span>+2</span></label>
+            <label class="form-pill"><input type="radio" name="amigos" value="3" /><span>+3</span></label>
+            <label class="form-pill"><input type="radio" name="amigos" value="4+" /><span>+4 o más</span></label>
+          </div>
         </div>
 
         <div class="form-field">
-          <label class="form-label" for="f-restricciones">Restricciones alimentarias <span class="opt">(opcional)</span></label>
-          <input class="form-input" id="f-restricciones" name="restricciones" type="text" placeholder="Vegetariano, celíaco, ninguna..." />
+          <label class="form-label" for="f-restricciones">Restricciones o alergias <span class="opt">(el menú es vegano)</span></label>
+          <input class="form-input" id="f-restricciones" name="restricciones" type="text" placeholder="Celíaca, frutos secos, ninguna..." />
         </div>
 
         <div class="form-field">

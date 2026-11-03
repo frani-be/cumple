@@ -29,13 +29,14 @@ function doPost(e) {
   let sheet = ss.getSheetByName(SHEET_NAME);
   if (!sheet) {
     sheet = ss.insertSheet(SHEET_NAME);
-    sheet.appendRow(['Fecha', 'Nombre', 'Vienes', 'Platos', 'Restricciones', 'Bingo']);
+    sheet.appendRow(['Fecha', 'Nombre', 'Email', 'Vienes', 'Acompañantes', 'Restricciones', 'Bingo']);
   }
   sheet.appendRow([
     new Date(),
     p.nombre || '',
+    p.email || '',
     p.vienes || '',
-    p.personas || '',
+    p.amigos || '',
     p.restricciones || '',
     p.bingo || '',
   ]);
