@@ -4,17 +4,6 @@ import EmbroideryPattern from '../components/EmbroideryPattern.astro';
 
 const EVENT_DATE_ISO = '2026-11-27T20:00:00-03:00';
 
-// Banderines de la guirnalda del hero: arco suave sobre el ancho del viewport
-const flagColors = ['#e8492c', '#e8a02c', '#4e8a57', '#f0b28e', '#c2351f'];
-const flags = Array.from({ length: 26 }, (_, i) => {
-  const t = i / 25;
-  return {
-    x: 1200 * t,
-    y: 8 + 144 * t - 144 * t * t,
-    color: flagColors[i % flagColors.length],
-  };
-});
-
 // Confeti flotante del hero
 const confetti = [
   { top: '26%', left: '12%', bg: '#e8a02c', rot: '18deg', delay: '-1s', round: false },
@@ -85,15 +74,7 @@ const jsonLd = {
 
   <!-- Hero -->
   <header class="hero-home pt-40 pb-24 text-center lg:text-left w-screen relative overflow-hidden isolate">
-    <svg class="banderines" viewBox="0 0 1200 95" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M0 8 Q600 80 1200 8" fill="none" stroke="#c2351f" stroke-width="3" opacity="0.45" />
-      {flags.map(f => (
-        <path
-          d={`M${(f.x - 11).toFixed(1)} ${(f.y + 2).toFixed(1)} L${(f.x + 11).toFixed(1)} ${(f.y + 2).toFixed(1)} L${f.x.toFixed(1)} ${(f.y + 30).toFixed(1)} Z`}
-          fill={f.color}
-        />
-      ))}
-    </svg>
+    <img src="/images/guirnalda.svg" class="banderines" alt="" aria-hidden="true" />
     {confetti.map((c, i) => (
       <span
         class:list={['confetti-bit', { 'confetti-bit--round': c.round, 'hidden md:block': i > 3 }]}
