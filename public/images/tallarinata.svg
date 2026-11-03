@@ -5,7 +5,7 @@
   <!-- cartón de bingo -->
   <g transform="rotate(-8 130 130)">
     <rect x="55" y="70" width="180" height="140" rx="14" fill="#fff" stroke="#c2351f" stroke-width="4"/>
-    <g fill="#c2351f" font-family="'Space Grotesk',sans-serif" font-size="26" font-weight="700" text-anchor="middle">
+    <g fill="#c2351f" font-family="'Fredoka',sans-serif" font-size="26" font-weight="700" text-anchor="middle">
       <text x="85" y="105">B</text><text x="125" y="105">I</text><text x="165" y="105">N</text><text x="205" y="105">G</text>
     </g>
     <g stroke="#f1e0c8" stroke-width="3">
@@ -49,7 +49,7 @@
     </g>
   </g>
   <!-- bolillas de bingo -->
-  <g font-family="'Space Grotesk',sans-serif" font-weight="700" text-anchor="middle">
+  <g font-family="'Fredoka',sans-serif" font-weight="700" text-anchor="middle">
     <circle cx="415" cy="105" r="34" fill="#c2351f"/>
     <circle cx="415" cy="105" r="22" fill="#fff"/>
     <text x="415" y="113" font-size="20" fill="#c2351f">27</text>

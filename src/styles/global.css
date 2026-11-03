@@ -22,9 +22,10 @@
   --color-mustard: #e8a02c;
   --color-cream: #fff6ea;
 
-  --font-family-titles: "Space Grotesk", "DM Sans", sans-serif;
+  --font-family-titles: "Fredoka", "DM Sans", sans-serif;
   --font-family-primary: "DM Sans", sans-serif;
   --font-family-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-family-hand: "Caveat", cursive;
 
   --font-size-xs: 0.5em;
   --font-size-sm: 0.75em;
