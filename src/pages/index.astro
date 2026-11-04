@@ -16,40 +16,11 @@ const confetti = [
   { top: '86%', left: '58%', bg: '#c2351f', rot: '-40deg', delay: '-3s', round: true },
 ];
 
-const donaciones = [
-  { monto: '$5.000', desc: 'Una porción de tallarines simbólica para Alonso.', href: 'https://mpago.la/2rPVwuB' },
-  { monto: '$15.000', desc: 'La tallarinata completa, con bingo incluido.', href: 'https://mpago.la/1Zim2jM', destacada: true },
-  { monto: '$30.000', desc: 'Modo generosidad: Alonso te lo agradece doble.', href: 'https://mpago.la/2z3PFd5' },
-];
-
-const beneficiosMP = [
-  {
-    titulo: 'Todos los medios de pago',
-    desc: 'Tarjeta de crédito, débito, prepago o el saldo de tu cuenta de Mercado Pago.',
-    icon: 'M3 8.5A2.5 2.5 0 0 1 5.5 6h13A2.5 2.5 0 0 1 21 8.5v7a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 15.5v-7zM3 10h18M7 14.5h4',
-  },
-  {
-    titulo: 'Puedes pagar en cuotas',
-    desc: 'Con tarjeta de crédito eliges el número de cuotas que te acomode.',
-    icon: 'M8 2v4M16 2v4M3 9h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM9 14l2 2 4-4',
-  },
-  {
-    titulo: 'Sin cuenta, sin drama',
-    desc: 'No necesitas estar registrado en Mercado Pago: pagas como invitado con tus datos.',
-    icon: 'M13 3L4 14h6l-1 7 9-11h-6l1-7z',
-  },
-  {
-    titulo: 'Pago protegido',
-    desc: 'Tus datos viajan cifrados y tu plata llega directo. Recibes comprobante al instante.',
-    icon: 'M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4zM9 12l2 2 4-4',
-  },
-];
-
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Event',
-  name: 'Cumple Frani: Tallarinata + Bingo a beneficio de Alonso',
-  description: 'Celebración de cumpleaños con tallarinata vegana y bingo. En vez de regalos, donaciones por Mercado Pago para Alonso, que está reconstruyendo su tienda en Pichilemu tras un robo.',
+  name: 'Cumple Frani: Tallarinata + Bingo',
+  description: 'Celebración de cumpleaños con tallarinata vegana y bingo.',
   startDate: EVENT_DATE_ISO,
   eventStatus: 'https://schema.org/EventScheduled',
   eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
@@ -67,8 +38,8 @@ const jsonLd = {
 ---
 
 <BaseLayout
-  title="Tallarinata + Bingo | Cumple Frani a beneficio de Alonso"
-  description="Este año mi cumpleaños tiene causa: tallarinata vegana, bingo y donaciones por Mercado Pago para Alonso, que está reconstruyendo su tienda en Pichilemu. Viernes 27 de noviembre."
+  title="Tallarinata + Bingo | Cumple Frani"
+  description="Mi cumpleaños se celebra con tallarinata vegana y bingo. Viernes 27 de noviembre a las 20:00, confirma tu asistencia."
 >
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
@@ -88,13 +59,13 @@ const jsonLd = {
       <div class="w-full lg:w-3/5">
         <p class="hero-eyebrow">Viernes 27 de noviembre · 20:00</p>
         <h1 class="mt-6 text-custom-black leading-[0.95]">
-          <span class="block text-[1.05em] lg:text-[1.2em] font-medium">Este cumple, nada de regalos:</span>
+          <span class="block text-[1.05em] lg:text-[1.2em] font-medium">Este cumple lo celebramos con</span>
           <span class="text-gradient block text-[2.4em] lg:text-[3em] pb-[0.18em] -mb-[0.18em]">Tallarinata + Bingo</span>
         </h1>
         <p class="text-[1.15em] mt-5 text-custom-dark-gray max-w-[34rem] mx-auto lg:mx-0">
-          Sí, hay fiesta: tallarinata vegana y cartones el 27 a las 20:00. Pero lo único que te voy a pedir
-          es una donación para mi amigo <strong class="font-semibold text-custom-black">Alonso</strong>.
-          Abajo te cuento por qué.
+          Hay fiesta: tallarinata vegana, cartones de bingo y sobremesa larga el 27 a las 20:00.
+          Solo te pido que <strong class="font-semibold text-custom-black">confirmes tu asistencia</strong>
+          para calcular tallarines y cartones.
         </p>
         <div class="countdown mt-7" id="countdown" role="timer" aria-label="Cuenta regresiva para la tallarinata">
           <div class="count-unit"><span class="count-num" data-cd="d">--</span><span class="count-lbl">días</span></div>
@@ -106,8 +77,8 @@ const jsonLd = {
           <div class="count-unit"><span class="count-num" data-cd="s">--</span><span class="count-lbl">seg</span></div>
         </div>
         <div class="flex flex-wrap gap-4 mt-8 justify-center lg:justify-start">
-          <a href="#donar" class="btn btn-primary">Quiero donar</a>
-          <a href="#causa" class="btn btn-secondary">La historia</a>
+          <a href="#confirmar" class="btn btn-primary">Confirmar asistencia</a>
+          <a href="#detalles" class="btn btn-secondary">La fiesta</a>
         </div>
       </div>
 
@@ -128,104 +99,6 @@ const jsonLd = {
       </div>
     </div>
   </header>
-
-  <!-- Donaciones -->
-  <section class="section-block donar-band" id="donar">
-    <div class="container-mid">
-      <div class="section-title-wrapper">
-        <span class="section-tag">// lo único que te pido</span>
-        <h2 class="section-title-front">Dona para Alonso</h2>
-        <p class="section-title-subtitle">
-          Cinco, quince o treinta lucas, o lo que te nazca. La entrada a la tallarinata
-          es liberada: tu donación es el regalo, y va directo a su tienda.
-        </p>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        {donaciones.map(d => (
-          <a
-            href={d.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            class:list={['service-card p-6 text-center', { 'donacion-card--destacada': d.destacada }]}
-          >
-            <span class="service-name">{d.destacada ? 'La más elegida' : 'Donación'}</span>
-            <span class="block text-[2.4em] font-bold leading-none" style="font-family:var(--font-family-titles)">{d.monto}</span>
-            <p class="text-sm text-custom-dark-gray mt-3">{d.desc}</p>
-            <span class="btn btn-primary mt-5">Donar {d.monto}</span>
-          </a>
-        ))}
-      </div>
-      <div class="mt-6 text-center">
-        <a
-          href="https://link.mercadopago.cl/cumplefranibe"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="service-card p-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-left"
-        >
-          <div>
-            <span class="service-name">Otro monto</span>
-            <h3 class="text-lg font-semibold">¿Quieres donar otra cantidad?</h3>
-            <p class="text-sm text-custom-dark-gray mt-1">
-              link.mercadopago.cl/cumplefranibe
-            </p>
-          </div>
-          <span class="btn btn-secondary flex-shrink-0">Donar monto libre</span>
-        </a>
-      </div>
-      <div class="service-card p-6 mt-6">
-        <div class="flex items-start gap-4">
-          <span class="icon-tile icon-tile-lg" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4zM9 12l2 2 4-4" />
-            </svg>
-          </span>
-          <div>
-            <span class="service-name">Transparencia</span>
-            <h3 class="text-lg font-semibold">Esta cuenta es solo para esto</h3>
-            <p class="text-sm text-custom-dark-gray mt-1">
-              El link de Mercado Pago <strong class="font-semibold text-custom-black">cumplefranibe</strong>
-              lo creé exclusivamente para esta colecta: nada de lo que entre se mezcla con mi plata.
-              Cuando cierre la recaudación, publico en esta misma página el total juntado
-              y el 100% se lo entrego a Alonso.
-            </p>
-          </div>
-        </div>
-      </div>
-      <p class="text-center text-sm text-custom-dark-gray mt-6 flex items-center justify-center gap-2 flex-wrap">
-        Pagos procesados por
-        <span class="mp-badge mp-badge--sm"><img src="/images/mp-handshake.svg" alt="Mercado Pago" /></span>.
-        Cada peso va directo a la recuperación de la tienda de Alonso.
-      </p>
-    </div>
-  </section>
-
-  <!-- La historia -->
-  <section class="section-block-sm mantel-bg" id="causa">
-    <div class="container-narrow">
-      <div class="section-title-wrapper">
-        <span class="section-tag section-tag--basil">// la historia</span>
-        <h2 class="section-title-front">Alonso está levantando su tienda</h2>
-      </div>
-      <article class="service-card p-8 lg:p-10">
-        <p class="text-custom-dark-gray leading-relaxed">
-          Alonso es de esos amigos que se la juegan: se fue a Pichilemu e invirtió
-          sus ahorros en una tienda. Hace poco le robaron, y aunque el golpe fue duro,
-          ya está trabajando en levantarla de nuevo.
-        </p>
-        <p class="text-custom-dark-gray leading-relaxed mt-4">
-          Esta fiesta es mi forma de darle un empujón: en vez de regalos,
-          junto a la gente que lo queremos para sumar a su recuperación.
-          <strong class="font-semibold text-custom-black">Comida rica, bingo y buena causa
-          en una misma mesa.</strong>
-        </p>
-        <p class="text-custom-dark-gray leading-relaxed mt-4">
-          Si puedes venir, maravilloso: hay tallarines y bingo. Si no puedes,
-          tu donación corre igual de lejos.
-        </p>
-        <p class="mt-7"><span class="firma">un abrazo, Frani</span></p>
-      </article>
-    </div>
-  </section>
 
   <!-- La fiesta -->
   <section class="section-block-sm" id="detalles">
@@ -269,45 +142,14 @@ const jsonLd = {
     </div>
   </section>
 
-  <!-- Cómo pagar -->
-  <section class="section-block-sm">
-    <div class="container-mid">
-      <div class="section-title-wrapper">
-        <span class="section-tag">// sin excusas</span>
-        <h2 class="section-title-front">Donar toma dos minutos</h2>
-        <p class="section-title-subtitle">
-          Uso Mercado Pago porque acepta casi todo y no necesitas cuenta para pagar.
-        </p>
-        <p class="mt-5 flex justify-center">
-          <span class="mp-badge"><img src="/images/mp-handshake.svg" alt="Mercado Pago" /></span>
-        </p>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        {beneficiosMP.map(b => (
-          <div class="flex items-start gap-4">
-            <span class="icon-tile icon-tile-lg" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d={b.icon} />
-              </svg>
-            </span>
-            <div>
-              <h3 class="font-semibold">{b.titulo}</h3>
-              <p class="text-sm text-custom-dark-gray mt-1">{b.desc}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
   <!-- Cierre / RSVP -->
-  <section class="page-hero text-center">
+  <section class="page-hero text-center" id="confirmar">
     <div class="container-narrow py-16 lg:py-20">
       <span class="section-tag section-tag--dark">// nos vemos</span>
       <h2 class="section-title-front section-title-front--dark">El 27 nos vemos</h2>
       <p class="section-title-subtitle section-title-subtitle--dark">
         Apúntate con tu correo así te mando la invitación de calendario
-        (y calculo tallarines y cartones). Si no puedes venir, la donación corre igual.
+        (y calculo tallarines y cartones).
       </p>
       <form id="rsvp-form" class="service-card rsvp-card p-6 lg:p-8 mt-9 text-left" novalidate>
         <span class="service-name">Confirmación</span>
@@ -367,9 +209,6 @@ const jsonLd = {
         <button type="submit" class="btn btn-primary w-full mt-6">Confirmar asistencia</button>
         <p class="form-status" id="rsvp-status" role="status" aria-live="polite"></p>
       </form>
-      <p class="mt-6">
-        <a href="#donar" class="btn btn-outline-white">Ir a donar</a>
-      </p>
     </div>
   </section>
 
