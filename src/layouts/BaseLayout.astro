@@ -10,8 +10,8 @@ interface Props {
 
 const {
   title,
-  description = 'Tallarinata + bingo por mi cumpleaños, a beneficio de Alonso. En vez de regalo, dona por Mercado Pago.',
-  ogImage = 'https://cumple.frani.be/images/og-cumple.png',
+  description = 'Tallarinata vegana + bingo por mi cumpleaños. Viernes 27 de noviembre, 20:00.',
+  ogImage = 'https://cumple.frani.be/images/og-cumple.png?v=2',
 } = Astro.props;
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://cumple.frani.be').href;
@@ -91,7 +91,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://cumple.f
           </a>
         </div>
         <div class="flex items-center gap-2">
-          <a href="#donar" class="btn btn-primary" style="padding:0.55rem 1.4rem">Donar</a>
+          <a href="#confirmar" class="btn btn-primary" style="padding:0.55rem 1.4rem">Confirmar</a>
           <button
             id="theme-toggle"
             class="flex items-center justify-center w-10 h-10 rounded-full text-custom-dark-gray hover:text-custom-purple hover:bg-custom-purple/10 transition-all"

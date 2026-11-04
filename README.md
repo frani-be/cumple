@@ -1,8 +1,6 @@
 # cumple.frani.be
 
-Invitación al cumpleaños de Frani: **tallarinata + bingo** a beneficio de Alonso, que perdió la inversión de su tienda en Pichilemu tras un robo.
-
-En vez de regalos: donaciones por Mercado Pago.
+Invitación al cumpleaños de Frani: **tallarinata + bingo**, con formulario de confirmación de asistencia.
 
 ## Desarrollo
 
