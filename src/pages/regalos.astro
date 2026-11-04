@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ListaRegalos from '../components/ListaRegalos.astro';
+---
+
+<BaseLayout
+  title="Regalos para Frani"
+  description="La lista de regalos de Frani: elige el tuyo, se reserva anónimo y queda bloqueado para que no se repita."
+  noindex
+>
+  <section class="section-block regalos-band" id="regalos">
+    <div class="container-mid">
+      <div class="section-title-wrapper">
+        <img src="/images/regalo-lazo.png" alt="" aria-hidden="true" class="regalo-deco" />
+        <span class="section-tag">// con cariño</span>
+        <h1 class="section-title-front">Regalos para Frani</h1>
+        <p class="section-title-subtitle">
+          Si me quieren regalar algo, aquí hay ideas con precio referencial y link de compra.
+          Marquen el suyo con "Yo lo regalo!": se bloquea para que no salga repetido
+          y nadie sabrá que fueron ustedes (ni yo). Si se arrepienten, lo liberan
+          desde el mismo navegador.
+        </p>
+      </div>
+      <ListaRegalos />
+    </div>
+  </section>
+</BaseLayout>

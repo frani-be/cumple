@@ -1,27 +1,34 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import ListaRegalos from '../components/ListaRegalos.astro';
+// La página de la familia ahora vive en /regalos. Este redirect conserva
+// los links ya compartidos como /familia.
 ---
 
-<BaseLayout
-  title="Regalos para Frani"
-  description="La lista de regalos de Frani: elige el tuyo, se reserva anónimo y queda bloqueado para que no se repita."
-  noindex
->
-  <section class="section-block regalos-band" id="regalos">
-    <div class="container-mid">
-      <div class="section-title-wrapper">
-        <img src="/images/regalo-lazo.png" alt="" aria-hidden="true" class="regalo-deco" />
-        <span class="section-tag">// con cariño</span>
-        <h1 class="section-title-front">Regalos para Frani</h1>
-        <p class="section-title-subtitle">
-          Si me quieren regalar algo, aquí hay ideas con precio referencial y link de compra.
-          Marquen el suyo con "Yo lo regalo!": se bloquea para que no salga repetido
-          y nadie sabrá que fueron ustedes (ni yo). Si se arrepienten, lo liberan
-          desde el mismo navegador.
-        </p>
-      </div>
-      <ListaRegalos />
-    </div>
-  </section>
-</BaseLayout>
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="refresh" content="0; url=/regalos/" />
+    <link rel="canonical" href="https://cumple.frani.be/regalos/" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Cumple Frani</title>
+    <script is:inline>location.replace('/regalos/');</script>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff3e2;
+        color: #8a6b54;
+        font-family: ui-monospace, monospace;
+        font-size: 0.95rem;
+      }
+      a { color: #c2351f; }
+    </style>
+  </head>
+  <body>
+    <p>Te llevo a la lista de regalos... <a href="/regalos/">seguir</a></p>
+  </body>
+</html>
