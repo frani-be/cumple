@@ -20,7 +20,7 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Event',
   name: 'Cumple Frani: Tallarinata + Bingo',
-  description: 'Celebración de cumpleaños con tallarinata vegana y bingo.',
+  description: 'Celebración de cumpleaños con tallarinata vegana, bingo y lista de regalos con reserva anónima.',
   startDate: EVENT_DATE_ISO,
   eventStatus: 'https://schema.org/EventScheduled',
   eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
@@ -39,7 +39,7 @@ const jsonLd = {
 
 <BaseLayout
   title="Tallarinata + Bingo | Cumple Frani"
-  description="Mi cumpleaños se celebra con tallarinata vegana y bingo. Viernes 27 de noviembre a las 20:00, confirma tu asistencia."
+  description="Mi cumpleaños se celebra con tallarinata vegana y bingo. Viernes 27 de noviembre a las 20:00: confirma tu asistencia y mira la lista de regalos."
 >
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
@@ -64,8 +64,8 @@ const jsonLd = {
         </h1>
         <p class="text-[1.15em] mt-5 text-custom-dark-gray max-w-[34rem] mx-auto lg:mx-0">
           Hay fiesta: tallarinata vegana, cartones de bingo y sobremesa larga el 27 a las 20:00.
-          Solo te pido que <strong class="font-semibold text-custom-black">confirmes tu asistencia</strong>
-          para calcular tallarines y cartones.
+          Confirma tu asistencia para calcular tallarines y cartones, y si quieres regalarme algo,
+          abajo está <strong class="font-semibold text-custom-black">la lista de regalos</strong>.
         </p>
         <div class="countdown mt-7" id="countdown" role="timer" aria-label="Cuenta regresiva para la tallarinata">
           <div class="count-unit"><span class="count-num" data-cd="d">--</span><span class="count-lbl">días</span></div>
@@ -78,7 +78,7 @@ const jsonLd = {
         </div>
         <div class="flex flex-wrap gap-4 mt-8 justify-center lg:justify-start">
           <a href="#confirmar" class="btn btn-primary">Confirmar asistencia</a>
-          <a href="#detalles" class="btn btn-secondary">La fiesta</a>
+          <a href="#regalos" class="btn btn-secondary">Ver regalos</a>
         </div>
       </div>
 
@@ -99,6 +99,26 @@ const jsonLd = {
       </div>
     </div>
   </header>
+
+  <!-- Lista de regalos -->
+  <section class="section-block regalos-band" id="regalos">
+    <div class="container-mid">
+      <div class="section-title-wrapper">
+        <span class="section-tag">// opcional pero se agradece</span>
+        <h2 class="section-title-front">La lista de regalos</h2>
+        <p class="section-title-subtitle">
+          Si quieres regalarme algo, aquí hay ideas con precio referencial y link de compra.
+          Marca el tuyo con "Yo lo regalo": se bloquea para que no salga repetido
+          y nadie sabrá que fuiste tú (ni yo). Si te arrepientes, lo liberas
+          desde el mismo navegador.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="regalos-grid">
+        <p class="regalos-msg">// cargando la lista...</p>
+      </div>
+      <p class="form-status" id="regalos-status" role="status" aria-live="polite"></p>
+    </div>
+  </section>
 
   <!-- La fiesta -->
   <section class="section-block-sm" id="detalles">
@@ -246,8 +266,8 @@ const jsonLd = {
       });
     });
 
-    // RSVP: envía al Apps Script que escribe en la Sheet de Drive
-    const RSVP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxX4lVRE-27PPU8JIlSqY_IJ2hwOusHjda6GxFCaeIgTw6mXw5Ivjja-SuqcUjqcg1o/exec';
+    // Apps Script web app: RSVP (POST) + lista de regalos (GET/POST)
+    const SCRIPT_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxX4lVRE-27PPU8JIlSqY_IJ2hwOusHjda6GxFCaeIgTw6mXw5Ivjja-SuqcUjqcg1o/exec';
     const form = document.getElementById('rsvp-form') as HTMLFormElement | null;
     const status = document.getElementById('rsvp-status');
     form?.addEventListener('submit', async (e) => {
@@ -262,7 +282,7 @@ const jsonLd = {
         btn.textContent = 'Enviando...';
       }
       try {
-        await fetch(RSVP_ENDPOINT, {
+        await fetch(SCRIPT_ENDPOINT, {
           method: 'POST',
           mode: 'no-cors',
           body: new FormData(form),
@@ -280,6 +300,128 @@ const jsonLd = {
         if (status) {
           status.textContent = '// ups, algo falló. Intenta de nuevo.';
           status.classList.add('form-status--err');
+        }
+      }
+    });
+
+    // ── Lista de regalos ──
+    // Reserva anónima: el navegador genera un token aleatorio, lo guarda en
+    // localStorage y lo manda al Apps Script. El GET devuelve solo la huella
+    // (SHA-256 del token) para que cada quien reconozca su regalo sin que
+    // nadie más sepa quién lo reservó.
+    interface Regalo {
+      id: string;
+      regalo: string;
+      precio: string;
+      link: string;
+      reservado: boolean;
+      huella: string;
+    }
+    const regalosGrid = document.getElementById('regalos-grid');
+    const regalosStatus = document.getElementById('regalos-status');
+    const tokenKey = (id: string) => `regalo:${id}`;
+    const esc = (s: string) =>
+      s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
+    const nuevoToken = () =>
+      crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
+
+    async function sha256Hex(texto: string) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(texto));
+      return Array.from(new Uint8Array(buf), b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function renderRegalos(regalos: Regalo[]) {
+      if (!regalosGrid) return;
+      // Marca cuáles reservé yo: compara la huella del GET con el token local
+      const mios = new Set<string>();
+      for (const g of regalos) {
+        const token = localStorage.getItem(tokenKey(g.id));
+        if (!token) continue;
+        if (g.reservado && g.huella && (await sha256Hex(token)) === g.huella) {
+          mios.add(g.id);
+        } else {
+          localStorage.removeItem(tokenKey(g.id));
+        }
+      }
+      if (!regalos.length) {
+        regalosGrid.innerHTML = '<p class="regalos-msg">// la lista todavía se está cocinando, vuelve pronto</p>';
+        return;
+      }
+      regalosGrid.innerHTML = regalos.map(g => {
+        const mio = mios.has(g.id);
+        const tomado = g.reservado && !mio;
+        const estado = mio
+          ? '<span class="tag-mono tag-mono--basil">// lo regalas tú</span>'
+          : tomado
+            ? '<span class="tag-mono">// ya lo regala alguien</span>'
+            : '';
+        const linkBtn = g.link
+          ? `<a href="${esc(g.link)}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">Ver dónde comprarlo</a>`
+          : '';
+        const accion = mio
+          ? `<button type="button" class="btn btn-tertiary" data-action="liberar" data-id="${esc(g.id)}">Liberar</button>`
+          : tomado
+            ? ''
+            : `<button type="button" class="btn btn-primary" data-action="reservar" data-id="${esc(g.id)}">Yo lo regalo</button>`;
+        return `
+          <article class="service-card regalo-card p-6${tomado ? ' regalo-card--tomado' : ''}">
+            <span class="service-name">${mio ? 'Tu regalo' : 'Regalo'}</span>
+            <h3 class="text-lg font-semibold">${esc(g.regalo)}</h3>
+            ${g.precio ? `<p class="text-sm text-custom-dark-gray mt-2">${esc(g.precio)}</p>` : ''}
+            <div class="mt-auto pt-4 flex flex-wrap items-center gap-3">${estado}${linkBtn}${accion}</div>
+          </article>`;
+      }).join('');
+    }
+
+    async function cargarRegalos() {
+      if (!regalosGrid) return;
+      try {
+        const res = await fetch(`${SCRIPT_ENDPOINT}?lista=regalos`);
+        const data = await res.json();
+        if (!data.ok) throw new Error('respuesta mala');
+        await renderRegalos(data.regalos || []);
+        if (regalosStatus) regalosStatus.textContent = '';
+      } catch {
+        regalosGrid.innerHTML = '<p class="regalos-msg">// no pude cargar la lista, recarga la página</p>';
+      }
+    }
+    cargarRegalos();
+    // Refresca al volver a la pestaña por si alguien reservó mientras tanto
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') cargarRegalos();
+    });
+
+    regalosGrid?.addEventListener('click', async (e) => {
+      const btn = (e.target as HTMLElement).closest('button[data-action]') as HTMLButtonElement | null;
+      if (!btn) return;
+      const id = btn.dataset.id!;
+      const action = btn.dataset.action!;
+      btn.disabled = true;
+      btn.textContent = 'Guardando...';
+      const fd = new FormData();
+      fd.append('action', action);
+      fd.append('id', id);
+      let token = localStorage.getItem(tokenKey(id)) || '';
+      if (action === 'reservar') {
+        token = nuevoToken();
+        localStorage.setItem(tokenKey(id), token);
+      }
+      fd.append('token', token);
+      try {
+        await fetch(SCRIPT_ENDPOINT, { method: 'POST', mode: 'no-cors', body: fd });
+        if (action === 'liberar') localStorage.removeItem(tokenKey(id));
+        if (regalosStatus) {
+          regalosStatus.classList.remove('form-status--err');
+          regalosStatus.textContent = action === 'reservar' ? '// guardando tu reserva...' : '// liberando el regalo...';
+        }
+        // El POST es no-cors (sin respuesta legible): se confirma releyendo la lista
+        setTimeout(cargarRegalos, 900);
+      } catch {
+        btn.disabled = false;
+        btn.textContent = action === 'reservar' ? 'Yo lo regalo' : 'Liberar';
+        if (regalosStatus) {
+          regalosStatus.textContent = '// ups, algo falló. Intenta de nuevo.';
+          regalosStatus.classList.add('form-status--err');
         }
       }
     });
