@@ -13,7 +13,7 @@ Landing de invitación al cumpleaños de Frani (`cumple.frani.be`): **tallarinat
 ## Estructura
 
 - `src/pages/index.astro`: home (hero, lista de regalos `#regalos`, detalles de la fiesta, cierre con RSVP `#confirmar`).
-- `src/pages/familia.astro`: subpágina para la familia que no viene a la tallarinata; solo la lista de regalos (`noindex`, se comparte por URL).
+- `src/pages/familia.astro`: subpágina para la familia (`noindex`, se comparte por URL). Solo la lista de regalos; el copy es deliberadamente neutro: NO mencionar la tallarinata ni la otra página/invitación para que nadie se sienta mal.
 - `src/components/ListaRegalos.astro`: tabla interactiva de regalos + toda la lógica (fetch, reservar, liberar). La usan ambas páginas.
 - `src/scripts/config.ts`: `SCRIPT_ENDPOINT` compartido (mismo Apps Script para RSVP y regalos).
 - `src/layouts/BaseLayout.astro`: head/meta/OG, prop `noindex`, nav mínimo (logo + CTA Confirmar + toggle tema; el CTA va a `/#confirmar` fuera del home), footer con gradiente.
