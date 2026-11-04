@@ -2058,17 +2058,87 @@ button:not(:disabled) {
     linear-gradient(160deg, #2e1a10 0%, #3a2415 100%);
 }
 .regalos-msg {
-  grid-column: 1 / -1;
   text-align: center;
   font-family: var(--font-family-mono);
   font-size: 0.85rem;
   color: var(--color-custom-dark-gray);
+  padding: 1.5rem 0;
 }
-.regalo-card--tomado { opacity: 0.62; }
-.regalo-card--tomado:hover {
-  transform: none;
-  box-shadow: none;
-  border-color: var(--color-border-soft);
+.regalo-deco {
+  width: 4.5rem;
+  height: auto;
+  margin: 0 auto 0.5rem;
+  transform: rotate(-6deg);
+  display: block;
+}
+
+/* Tabla de regalos: filas separadas por dashed, estilo mantel */
+.tabla-regalos-wrap { padding: 0.5rem; }
+.tabla-scroll { overflow-x: auto; }
+.tabla-regalos {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  min-width: 34rem;
+}
+.tabla-regalos th {
+  font-family: var(--font-family-mono);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent-text);
+  padding: 0.7rem 1rem;
+  border-bottom: 1.5px solid var(--color-border-soft);
+  white-space: nowrap;
+}
+.tabla-regalos td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1.5px dashed var(--color-border-soft);
+  font-size: 0.95rem;
+  vertical-align: middle;
+}
+.tabla-regalos tbody tr:last-child td { border-bottom: 0; }
+.regalo-nombre { font-weight: 600; }
+.regalo-precio {
+  font-family: var(--font-family-mono);
+  font-size: 0.82rem;
+  white-space: nowrap;
+  color: var(--color-custom-dark-gray);
+}
+.regalo-link {
+  font-family: var(--font-family-mono);
+  font-size: 0.78rem;
+  color: var(--color-accent-text);
+  border-bottom: 0.075em dashed;
+  white-space: nowrap;
+}
+.regalo-estado { text-align: right; }
+.regalo-estado .btn,
+.regalo-estado .tag-mono { margin-left: 0.4rem; }
+.regalo-row--tomado td { opacity: 0.55; }
+
+/* Botón chico para acciones dentro de la tabla */
+.btn-sm { padding: 0.5rem 1.1rem; font-size: 0.78rem; }
+
+/* En móvil la tabla se apila: cada fila es un bloque legible */
+@media (max-width: 639px) {
+  .tabla-regalos { min-width: 0; }
+  .tabla-regalos thead { display: none; }
+  .tabla-regalos tr {
+    display: block;
+    padding: 0.85rem 1rem;
+    border-bottom: 1.5px dashed var(--color-border-soft);
+  }
+  .tabla-regalos tbody tr:last-child { border-bottom: 0; }
+  .tabla-regalos td {
+    display: block;
+    padding: 0.2rem 0;
+    border-bottom: 0;
+  }
+  .regalo-estado { text-align: left; padding-top: 0.5rem; }
+  .regalo-estado .btn,
+  .regalo-estado .tag-mono { margin-left: 0; margin-right: 0.4rem; }
 }
 
 /* Respeta reduced-motion: desactiva animaciones y transiciones decorativas */

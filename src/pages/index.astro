@@ -104,6 +104,7 @@ const jsonLd = {
   <section class="section-block regalos-band" id="regalos">
     <div class="container-mid">
       <div class="section-title-wrapper">
+        <img src="/images/regalo-lazo.png" alt="" aria-hidden="true" class="regalo-deco" />
         <span class="section-tag">// opcional pero se agradece</span>
         <h2 class="section-title-front">La lista de regalos</h2>
         <p class="section-title-subtitle">
@@ -113,8 +114,22 @@ const jsonLd = {
           desde el mismo navegador.
         </p>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="regalos-grid">
-        <p class="regalos-msg">// cargando la lista...</p>
+      <div class="service-card tabla-regalos-wrap">
+        <div class="tabla-scroll">
+          <table class="tabla-regalos">
+            <thead>
+              <tr>
+                <th scope="col">Regalo</th>
+                <th scope="col">Precio aprox.</th>
+                <th scope="col">Dónde</th>
+                <th scope="col">Estado</th>
+              </tr>
+            </thead>
+            <tbody id="regalos-grid">
+              <tr><td colspan="4"><p class="regalos-msg">// cargando la lista...</p></td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <p class="form-status" id="regalos-status" role="status" aria-live="polite"></p>
     </div>
@@ -322,6 +337,8 @@ const jsonLd = {
     const tokenKey = (id: string) => `regalo:${id}`;
     const esc = (s: string) =>
       s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
+    // Si el precio viene como número crudo desde la Sheet, se muestra con formato CLP
+    const fmtPrecio = (p: string) => (/^\d+$/.test(p.trim()) ? `$${Number(p).toLocaleString('es-CL')}` : p);
     const nuevoToken = () =>
       crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
 
@@ -344,32 +361,28 @@ const jsonLd = {
         }
       }
       if (!regalos.length) {
-        regalosGrid.innerHTML = '<p class="regalos-msg">// la lista todavía se está cocinando, vuelve pronto</p>';
+        regalosGrid.innerHTML = '<tr><td colspan="4"><p class="regalos-msg">// la lista todavía se está cocinando, vuelve pronto</p></td></tr>';
         return;
       }
       regalosGrid.innerHTML = regalos.map(g => {
         const mio = mios.has(g.id);
         const tomado = g.reservado && !mio;
         const estado = mio
-          ? '<span class="tag-mono tag-mono--basil">// lo regalas tú</span>'
+          ? `<span class="tag-mono tag-mono--basil">// lo regalas tú</span>
+             <button type="button" class="btn btn-tertiary btn-sm" data-action="liberar" data-id="${esc(g.id)}">Liberar</button>`
           : tomado
             ? '<span class="tag-mono">// ya lo regala alguien</span>'
-            : '';
-        const linkBtn = g.link
-          ? `<a href="${esc(g.link)}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">Ver dónde comprarlo</a>`
+            : `<button type="button" class="btn btn-primary btn-sm" data-action="reservar" data-id="${esc(g.id)}">Yo lo regalo</button>`;
+        const link = g.link
+          ? `<a href="${esc(g.link)}" target="_blank" rel="noopener noreferrer" class="regalo-link">Ver tienda ↗</a>`
           : '';
-        const accion = mio
-          ? `<button type="button" class="btn btn-tertiary" data-action="liberar" data-id="${esc(g.id)}">Liberar</button>`
-          : tomado
-            ? ''
-            : `<button type="button" class="btn btn-primary" data-action="reservar" data-id="${esc(g.id)}">Yo lo regalo</button>`;
         return `
-          <article class="service-card regalo-card p-6${tomado ? ' regalo-card--tomado' : ''}">
-            <span class="service-name">${mio ? 'Tu regalo' : 'Regalo'}</span>
-            <h3 class="text-lg font-semibold">${esc(g.regalo)}</h3>
-            ${g.precio ? `<p class="text-sm text-custom-dark-gray mt-2">${esc(g.precio)}</p>` : ''}
-            <div class="mt-auto pt-4 flex flex-wrap items-center gap-3">${estado}${linkBtn}${accion}</div>
-          </article>`;
+          <tr class="regalo-row${tomado ? ' regalo-row--tomado' : ''}">
+            <td class="regalo-nombre">${esc(g.regalo)}</td>
+            <td class="regalo-precio">${g.precio ? esc(fmtPrecio(g.precio)) : ''}</td>
+            <td>${link}</td>
+            <td class="regalo-estado">${estado}</td>
+          </tr>`;
       }).join('');
     }
 
@@ -382,7 +395,7 @@ const jsonLd = {
         await renderRegalos(data.regalos || []);
         if (regalosStatus) regalosStatus.textContent = '';
       } catch {
-        regalosGrid.innerHTML = '<p class="regalos-msg">// no pude cargar la lista, recarga la página</p>';
+        regalosGrid.innerHTML = '<tr><td colspan="4"><p class="regalos-msg">// no pude cargar la lista, recarga la página</p></td></tr>';
       }
     }
     cargarRegalos();
