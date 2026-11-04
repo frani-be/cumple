@@ -16,8 +16,11 @@ const {
   noindex = false,
 } = Astro.props;
 
-// El CTA del nav apunta al RSVP del home; desde subpáginas hay que salir primero
-const ctaHref = Astro.url.pathname === '/' ? '#confirmar' : '/#confirmar';
+// El CTA del nav apunta al RSVP de /tallarinata; desde otras páginas hay que salir primero.
+// El logo va a la raíz de la página actual (la "/" del dominio redirige a /regalos).
+const esTallarinata = Astro.url.pathname.replace(/\/+$/, '') === '/tallarinata';
+const ctaHref = esTallarinata ? '#confirmar' : '/tallarinata#confirmar';
+const homeHref = esTallarinata ? '/tallarinata/' : '/regalos/';
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://cumple.frani.be').href;
 ---
@@ -89,7 +92,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://cumple.f
     <nav class="fixed top-0 left-1/2 -translate-x-1/2 w-full py-4 pb-6 z-[3] overflow-visible" id="navigation" aria-label="Navegación principal">
       <div class="w-full px-4 sm:px-8 mx-auto max-w-[540px] sm:max-w-[722px] md:max-w-[900px] lg:max-w-[1220px] xl:max-w-[1380px] flex items-center justify-between gap-3 sm:gap-6">
         <div class="logo-container">
-          <a href="/" aria-label="Ir al inicio">
+          <a href={homeHref} aria-label="Ir al inicio">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 70.3">
               <use href="/images/icons.svg#logo"></use>
             </svg>

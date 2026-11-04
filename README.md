@@ -1,6 +1,10 @@
 # cumple.frani.be
 
-Invitación al cumpleaños de Frani: **tallarinata + bingo**, con formulario de confirmación de asistencia.
+Invitación al cumpleaños de Frani: **tallarinata + bingo**, con formulario de confirmación de asistencia y lista de regalos con reserva anónima.
+
+- `/tallarinata` → la invitación (RSVP + regalos)
+- `/regalos` → solo la lista de regalos (para la familia)
+- `/` → redirige a `/regalos`
 
 ## Desarrollo
 
