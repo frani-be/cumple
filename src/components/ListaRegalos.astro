@@ -140,7 +140,7 @@
           ? '<span class="tag-mono">// ya lo regala alguien</span>'
           : `<button type="button" class="btn btn-primary btn-sm" data-action="reservar" data-id="${esc(g.id)}">Yo lo regalo!</button>`;
       const link = g.link
-        ? `<a href="${esc(g.link)}" target="_blank" rel="noopener noreferrer" class="regalo-link">Link</a>`
+        ? `<a href="${esc(g.link)}" target="_blank" rel="noopener noreferrer" class="regalo-link">Link ↗</a>`
         : '';
       return `
         <tr class="regalo-row${tomado ? ' regalo-row--tomado' : ''}">
