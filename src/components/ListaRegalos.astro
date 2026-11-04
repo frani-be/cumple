@@ -138,9 +138,9 @@
            <button type="button" class="btn btn-tertiary btn-sm" data-action="liberar" data-id="${esc(g.id)}">Liberar</button>`
         : tomado
           ? '<span class="tag-mono">// ya lo regala alguien</span>'
-          : `<button type="button" class="btn btn-primary btn-sm" data-action="reservar" data-id="${esc(g.id)}">Yo lo regalo</button>`;
+          : `<button type="button" class="btn btn-primary btn-sm" data-action="reservar" data-id="${esc(g.id)}">Yo lo regalo!</button>`;
       const link = g.link
-        ? `<a href="${esc(g.link)}" target="_blank" rel="noopener noreferrer" class="regalo-link">Ver tienda ↗</a>`
+        ? `<a href="${esc(g.link)}" target="_blank" rel="noopener noreferrer" class="regalo-link">Link</a>`
         : '';
       return `
         <tr class="regalo-row${tomado ? ' regalo-row--tomado' : ''}">
@@ -214,7 +214,7 @@
       setTimeout(cargarRegalos, 900);
     } catch {
       btn.disabled = false;
-      btn.textContent = action === 'reservar' ? 'Yo lo regalo' : 'Liberar';
+      btn.textContent = action === 'reservar' ? 'Yo lo regalo!' : 'Liberar';
       if (regalosStatus) {
         regalosStatus.textContent = '// ups, algo falló. Intenta de nuevo.';
         regalosStatus.classList.add('form-status--err');
