@@ -178,6 +178,8 @@ a.regular-link {
 /* Al hacer scroll el logo se achica con transform (no altera el layout,
    así los links y toggles no se mueven) */
 #navigation .logo-container svg {
+  width: clamp(6.5rem, 30vw, 10.125rem);
+  height: auto;
   transition: transform 0.3s ease;
   transform-origin: left center;
 }
@@ -1945,6 +1947,11 @@ button:not(:disabled) {
   font-size: 1.3rem;
   color: var(--color-border-hover);
   user-select: none;
+}
+/* En pantallas chicas el countdown se compacta para no rozar los bordes */
+@media (max-width: 400px) {
+  .countdown { gap: 0.4rem; }
+  .count-unit { min-width: 3.25rem; padding: 0.55rem 0.5rem 0.45rem; }
 }
 
 /* ── Formulario RSVP embebido ── */
