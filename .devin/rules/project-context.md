@@ -4,7 +4,7 @@ Landing de invitación al cumpleaños de Frani (`cumple.frani.be`): **tallarinat
 
 ## Stack
 
-- Astro 6 con output estático (SSG), una sola página.
+- Astro 6 con output estático (SSG), dos páginas: `/` (invitación completa) y `/familia` (solo lista de regalos, `noindex`).
 - Tailwind CSS v4 via `@tailwindcss/vite` (los tokens viven en `@theme` dentro de `src/styles/global.css`, no hay `tailwind.config`). El `global.css` es copia del de frani.be: no editar tokens sin necesidad.
 - Sin framework JS de UI: interactividad con `<script>` inline + TypeScript.
 - Solo español (es-CL). No hay i18n ni `/en/`.
@@ -12,8 +12,11 @@ Landing de invitación al cumpleaños de Frani (`cumple.frani.be`): **tallarinat
 
 ## Estructura
 
-- `src/pages/index.astro`: toda la página (hero, lista de regalos `#regalos`, detalles de la fiesta, cierre con RSVP `#confirmar`).
-- `src/layouts/BaseLayout.astro`: head/meta/OG, nav mínimo (logo + CTA Confirmar + toggle tema), footer con gradiente.
+- `src/pages/index.astro`: home (hero, lista de regalos `#regalos`, detalles de la fiesta, cierre con RSVP `#confirmar`).
+- `src/pages/familia.astro`: subpágina para la familia que no viene a la tallarinata; solo la lista de regalos (`noindex`, se comparte por URL).
+- `src/components/ListaRegalos.astro`: tabla interactiva de regalos + toda la lógica (fetch, reservar, liberar). La usan ambas páginas.
+- `src/scripts/config.ts`: `SCRIPT_ENDPOINT` compartido (mismo Apps Script para RSVP y regalos).
+- `src/layouts/BaseLayout.astro`: head/meta/OG, prop `noindex`, nav mínimo (logo + CTA Confirmar + toggle tema; el CTA va a `/#confirmar` fuera del home), footer con gradiente.
 - `src/components/`: componentes reutilizados de frani.be (`EmbroideryPattern`, `ArrowIcon`, etc.).
 - `public/images/icons.svg`: sprite con `#logo` y rrss. Las ilustraciones nuevas (`tallarinata.svg`, etc.) son placeholders que Frani reemplaza manteniendo el nombre de archivo.
 - `public/CNAME`: `cumple.frani.be` para GitHub Pages.
@@ -24,7 +27,7 @@ Landing de invitación al cumpleaños de Frani (`cumple.frani.be`): **tallarinat
 - Hora: 20:00. Entrada liberada. La tallarinata es 100% vegana.
 - RSVP campos: nombre, email (invitación Google Calendar), whatsapp (recordatorio), vienes (si/quizas), amigos (desplegable 0 a 4+), tiene_rest (si/no, si "si" muestra input restricciones).
 - RSVP: formulario embebido en la sección de cierre que hace POST (`no-cors`) al Google Apps Script web app (desplegado, endpoint real en `SCRIPT_ENDPOINT` de `src/pages/index.astro`), que escribe en la pestaña "Respuestas" de una Sheet de Drive. El código está en `apps-script/Code.gs`.
-- Lista de regalos: misma Sheet, pestaña "Regalos" (`id | regalo | precio | link | reservado | token | fecha`). Frani edita el catálogo a mano en la planilla. El front hace GET `?lista=regalos` y POST `action=reservar|liberar` (no-cors). Reserva anónima por token aleatorio en localStorage (`regalo:<id>`); el GET expone solo `huella` = SHA-256 del token para que el navegador reconozca sus reservas. `LockService` evita dobles reservas simultáneas.
+- Lista de regalos: misma Sheet, pestaña "Regalos" (`id | regalo | precio | link | reservado | token | fecha`). Frani edita el catálogo a mano en la planilla. El front hace GET `?lista=regalos` y POST `action=reservar|liberar` (no-cors). Reserva anónima por token aleatorio en localStorage (`regalo:<id>`); el GET expone solo `huella` = SHA-256 del token para que el navegador reconozca sus reservas. `LockService` evita dobles reservas simultáneas. `/` y `/familia` comparten el mismo estado: lo reservado en una se marca en la otra.
 - Pendiente de confirmar con Frani: lugar/dirección, redeploy del Apps Script con la versión nueva de `Code.gs`.
 
 ## Entorno (importante)

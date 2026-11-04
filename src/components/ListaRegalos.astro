@@ -1,0 +1,224 @@
+<div data-regalos>
+  <div class="regalos-toolbar">
+    <input
+      type="search"
+      class="form-input regalos-buscar"
+      placeholder="// buscar regalo..."
+      aria-label="Buscar regalo"
+      data-regalos-buscar
+    />
+    <div class="form-pills regalos-filtro" role="radiogroup" aria-label="Filtrar por estado">
+      <label class="form-pill"><input type="radio" name="filtro-regalos" value="todos" checked /><span>Todos</span></label>
+      <label class="form-pill"><input type="radio" name="filtro-regalos" value="disponibles" /><span>Disponibles</span></label>
+      <label class="form-pill"><input type="radio" name="filtro-regalos" value="reservados" /><span>Reservados</span></label>
+    </div>
+    <select class="form-select regalos-orden" aria-label="Ordenar la lista" data-regalos-orden>
+      <option value="az" selected>A → Z</option>
+      <option value="za">Z → A</option>
+      <option value="precio-asc">Precio: menor a mayor</option>
+      <option value="precio-desc">Precio: mayor a menor</option>
+    </select>
+  </div>
+  <div class="service-card tabla-regalos-wrap">
+    <div class="tabla-scroll">
+      <table class="tabla-regalos">
+        <caption class="regalos-count" data-regalos-count></caption>
+        <thead>
+          <tr>
+            <th scope="col">Regalo</th>
+            <th scope="col">Precio aprox.</th>
+            <th scope="col">Dónde</th>
+            <th scope="col">Estado</th>
+          </tr>
+        </thead>
+        <tbody data-regalos-grid>
+          <tr><td colspan="4"><p class="regalos-msg">// cargando la lista...</p></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p class="form-status" data-regalos-status role="status" aria-live="polite"></p>
+</div>
+
+<script>
+  import { SCRIPT_ENDPOINT } from '../scripts/config';
+
+  // Lista de regalos
+  // Reserva anónima: el navegador genera un token aleatorio, lo guarda en
+  // localStorage y lo manda al Apps Script. El GET devuelve solo la huella
+  // (SHA-256 del token) para que cada quien reconozca su regalo sin que
+  // nadie más sepa quién lo reservó. Como ambas páginas (la invitación y
+  // /familia) usan la misma Sheet, las reservas se ven en los dos lados.
+  interface Regalo {
+    id: string;
+    regalo: string;
+    precio: string;
+    link: string;
+    reservado: boolean;
+    huella: string;
+  }
+  const root = document.querySelector('[data-regalos]') as HTMLElement | null;
+  const regalosGrid = root?.querySelector('[data-regalos-grid]') as HTMLElement | null;
+  const regalosStatus = root?.querySelector('[data-regalos-status]') as HTMLElement | null;
+  const regalosCount = root?.querySelector('[data-regalos-count]') as HTMLElement | null;
+  const buscarInput = root?.querySelector('[data-regalos-buscar]') as HTMLInputElement | null;
+  const ordenSelect = root?.querySelector('[data-regalos-orden]') as HTMLSelectElement | null;
+  const tokenKey = (id: string) => `regalo:${id}`;
+  const esc = (s: string) =>
+    s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
+  // Si el precio viene como número crudo desde la Sheet, se muestra con formato CLP
+  const fmtPrecio = (p: string) => (/^\d+$/.test(p.trim()) ? `$${Number(p).toLocaleString('es-CL')}` : p);
+  const nuevoToken = () =>
+    crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
+
+  // Vista de la tabla: la Sheet es la fuente; filtro, búsqueda y orden son locales
+  let regalosData: Regalo[] = [];
+  let filtro = 'todos';
+  let orden = 'az';
+  let buscar = '';
+
+  const precioNum = (g: Regalo) => {
+    const digits = g.precio.replace(/\D/g, '');
+    return digits ? Number(digits) : Number.POSITIVE_INFINITY;
+  };
+  const cmpNombre = (a: Regalo, b: Regalo) =>
+    a.regalo.localeCompare(b.regalo, 'es', { sensitivity: 'base' });
+
+  function aplicarVista(): Regalo[] {
+    let out = regalosData;
+    if (filtro === 'disponibles') out = out.filter(g => !g.reservado);
+    else if (filtro === 'reservados') out = out.filter(g => g.reservado);
+    const q = buscar.trim().toLowerCase();
+    if (q) out = out.filter(g => g.regalo.toLowerCase().includes(q));
+    const sorted = [...out];
+    if (orden === 'az') sorted.sort(cmpNombre);
+    else if (orden === 'za') sorted.sort((a, b) => cmpNombre(b, a));
+    else if (orden === 'precio-asc') sorted.sort((a, b) => precioNum(a) - precioNum(b) || cmpNombre(a, b));
+    else sorted.sort((a, b) => precioNum(b) - precioNum(a) || cmpNombre(a, b));
+    return sorted;
+  }
+
+  async function sha256Hex(texto: string) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(texto));
+    return Array.from(new Uint8Array(buf), b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  async function renderRegalos() {
+    if (!regalosGrid) return;
+    // Marca cuáles reservé yo: compara la huella del GET con el token local
+    const mios = new Set<string>();
+    for (const g of regalosData) {
+      const token = localStorage.getItem(tokenKey(g.id));
+      if (!token) continue;
+      if (g.reservado && g.huella && (await sha256Hex(token)) === g.huella) {
+        mios.add(g.id);
+      } else {
+        localStorage.removeItem(tokenKey(g.id));
+      }
+    }
+    const vista = aplicarVista();
+    if (regalosCount) {
+      regalosCount.textContent = regalosData.length
+        ? `// ${vista.length} de ${regalosData.length} regalos`
+        : '';
+    }
+    if (!regalosData.length) {
+      regalosGrid.innerHTML = '<tr><td colspan="4"><p class="regalos-msg">// la lista todavía se está cocinando, vuelve pronto</p></td></tr>';
+      return;
+    }
+    if (!vista.length) {
+      regalosGrid.innerHTML = '<tr><td colspan="4"><p class="regalos-msg">// nada coincide con ese filtro</p></td></tr>';
+      return;
+    }
+    regalosGrid.innerHTML = vista.map(g => {
+      const mio = mios.has(g.id);
+      const tomado = g.reservado && !mio;
+      const estado = mio
+        ? `<span class="tag-mono tag-mono--basil">// lo regalas tú</span>
+           <button type="button" class="btn btn-tertiary btn-sm" data-action="liberar" data-id="${esc(g.id)}">Liberar</button>`
+        : tomado
+          ? '<span class="tag-mono">// ya lo regala alguien</span>'
+          : `<button type="button" class="btn btn-primary btn-sm" data-action="reservar" data-id="${esc(g.id)}">Yo lo regalo!</button>`;
+      const link = g.link
+        ? `<a href="${esc(g.link)}" target="_blank" rel="noopener noreferrer" class="regalo-link">Link ↗</a>`
+        : '';
+      return `
+        <tr class="regalo-row${tomado ? ' regalo-row--tomado' : ''}">
+          <td class="regalo-nombre">${esc(g.regalo)}</td>
+          <td class="regalo-precio">${g.precio ? esc(fmtPrecio(g.precio)) : ''}</td>
+          <td>${link}</td>
+          <td class="regalo-estado">${estado}</td>
+        </tr>`;
+    }).join('');
+  }
+
+  async function cargarRegalos() {
+    if (!regalosGrid) return;
+    try {
+      const res = await fetch(`${SCRIPT_ENDPOINT}?lista=regalos`);
+      const data = await res.json();
+      if (!data.ok) throw new Error('respuesta mala');
+      regalosData = (data.regalos || []).filter((g: Regalo) => g.regalo);
+      await renderRegalos();
+      if (regalosStatus) regalosStatus.textContent = '';
+    } catch {
+      regalosGrid.innerHTML = '<tr><td colspan="4"><p class="regalos-msg">// no pude cargar la lista, recarga la página</p></td></tr>';
+    }
+  }
+  cargarRegalos();
+  // Refresca al volver a la pestaña por si alguien reservó mientras tanto
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') cargarRegalos();
+  });
+
+  // Filtro, búsqueda y orden re-renderizan local, sin tocar la Sheet
+  buscarInput?.addEventListener('input', () => {
+    buscar = buscarInput.value;
+    renderRegalos();
+  });
+  root?.querySelectorAll('input[name="filtro-regalos"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      filtro = (radio as HTMLInputElement).value;
+      renderRegalos();
+    });
+  });
+  ordenSelect?.addEventListener('change', () => {
+    orden = ordenSelect.value;
+    renderRegalos();
+  });
+
+  regalosGrid?.addEventListener('click', async (e) => {
+    const btn = (e.target as HTMLElement).closest('button[data-action]') as HTMLButtonElement | null;
+    if (!btn) return;
+    const id = btn.dataset.id!;
+    const action = btn.dataset.action!;
+    btn.disabled = true;
+    btn.textContent = 'Guardando...';
+    const fd = new FormData();
+    fd.append('action', action);
+    fd.append('id', id);
+    let token = localStorage.getItem(tokenKey(id)) || '';
+    if (action === 'reservar') {
+      token = nuevoToken();
+      localStorage.setItem(tokenKey(id), token);
+    }
+    fd.append('token', token);
+    try {
+      await fetch(SCRIPT_ENDPOINT, { method: 'POST', mode: 'no-cors', body: fd });
+      if (action === 'liberar') localStorage.removeItem(tokenKey(id));
+      if (regalosStatus) {
+        regalosStatus.classList.remove('form-status--err');
+        regalosStatus.textContent = action === 'reservar' ? '// guardando tu reserva...' : '// liberando el regalo...';
+      }
+      // El POST es no-cors (sin respuesta legible): se confirma releyendo la lista
+      setTimeout(cargarRegalos, 900);
+    } catch {
+      btn.disabled = false;
+      btn.textContent = action === 'reservar' ? 'Yo lo regalo!' : 'Liberar';
+      if (regalosStatus) {
+        regalosStatus.textContent = '// ups, algo falló. Intenta de nuevo.';
+        regalosStatus.classList.add('form-status--err');
+      }
+    }
+  });
+</script>

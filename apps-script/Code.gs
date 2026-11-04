@@ -75,7 +75,7 @@ function doGet(e) {
   const regalos = [];
   for (let i = 1; i < rows.length; i++) {
     const id = String(rows[i][0] || '').trim();
-    if (!id) continue;
+    if (!id || !String(rows[i][1]).trim()) continue; // filas sin regalo no cuentan
     const reservado = rows[i][4] === true || String(rows[i][4]).toUpperCase() === 'TRUE';
     const token = String(rows[i][5] || '');
     regalos.push({
