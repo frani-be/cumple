@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ListaRegalos from '../components/ListaRegalos.astro';
+---
+
+<BaseLayout
+  title="Regalos para la familia | Cumple Frani"
+  description="La misma lista de regalos de mi cumple, para la familia que no viene a la tallarinata. Se reserva anónimo y queda bloqueado para todos."
+  noindex
+>
+  <section class="section-block regalos-band" id="regalos">
+    <div class="container-mid">
+      <div class="section-title-wrapper">
+        <img src="/images/regalo-lazo.png" alt="" aria-hidden="true" class="regalo-deco" />
+        <span class="section-tag">// solo para la familia</span>
+        <h1 class="section-title-front">Regalos aunque no vengan</h1>
+        <p class="section-title-subtitle">
+          Sé que la tallarinata les queda lejos, así que esta es la misma lista del cumple.
+          Si me quieren regalar algo, elijan acá: se reserva anónimo (ni yo sé quién fue)
+          y queda bloqueado para todos. Lo que se reserve acá también se marca en la
+          lista de la invitación, así no salen regalos repetidos.
+        </p>
+      </div>
+      <ListaRegalos />
+      <p class="text-center text-sm text-custom-dark-gray mt-6">
+        ¿Al final sí te animas a venir? La invitación con tallarines y bingo está
+        <a href="/" class="regular-link">acá</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

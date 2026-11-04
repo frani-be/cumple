@@ -6,13 +6,18 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  noindex?: boolean;
 }
 
 const {
   title,
   description = 'Tallarinata vegana + bingo por mi cumpleaños. Viernes 27 de noviembre, 20:00.',
   ogImage = 'https://cumple.frani.be/images/og-cumple.png?v=2',
+  noindex = false,
 } = Astro.props;
+
+// El CTA del nav apunta al RSVP del home; desde subpáginas hay que salir primero
+const ctaHref = Astro.url.pathname === '/' ? '#confirmar' : '/#confirmar';
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://cumple.frani.be').href;
 ---
@@ -25,7 +30,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://cumple.f
     <title>{title}</title>
     <meta name="author" content="Francisca Beatriz Medina Concha" />
     <meta name="description" content={description} />
-    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'} />
     <link rel="canonical" href={canonicalUrl} />
 
     <!-- Open Graph -->
@@ -91,7 +96,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://cumple.f
           </a>
         </div>
         <div class="flex items-center gap-2">
-          <a href="#confirmar" class="btn btn-primary" style="padding:0.55rem 1.4rem">Confirmar</a>
+          <a href={ctaHref} class="btn btn-primary" style="padding:0.55rem 1.4rem">Confirmar</a>
           <button
             id="theme-toggle"
             class="flex items-center justify-center w-10 h-10 rounded-full text-custom-dark-gray hover:text-custom-purple hover:bg-custom-purple/10 transition-all"
