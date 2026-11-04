@@ -1,6 +1,6 @@
 # Contexto del proyecto
 
-Landing de invitación al cumpleaños de Frani (`cumple.frani.be`): **tallarinata + bingo** cumpleañera con formulario RSVP. Ya no hay causa, donaciones ni links de Mercado Pago (se eliminaron a pedido de Frani): no volver a agregarlos.
+Landing de invitación al cumpleaños de Frani (`cumple.frani.be`): **tallarinata + bingo** cumpleañera con formulario RSVP y lista de regalos. Ya no hay causa, donaciones ni links de Mercado Pago (se eliminaron a pedido de Frani): no volver a agregarlos.
 
 ## Stack
 
@@ -12,7 +12,7 @@ Landing de invitación al cumpleaños de Frani (`cumple.frani.be`): **tallarinat
 
 ## Estructura
 
-- `src/pages/index.astro`: toda la página (hero, detalles de la fiesta, cierre con RSVP `#confirmar`).
+- `src/pages/index.astro`: toda la página (hero, lista de regalos `#regalos`, detalles de la fiesta, cierre con RSVP `#confirmar`).
 - `src/layouts/BaseLayout.astro`: head/meta/OG, nav mínimo (logo + CTA Confirmar + toggle tema), footer con gradiente.
 - `src/components/`: componentes reutilizados de frani.be (`EmbroideryPattern`, `ArrowIcon`, etc.).
 - `public/images/icons.svg`: sprite con `#logo` y rrss. Las ilustraciones nuevas (`tallarinata.svg`, etc.) son placeholders que Frani reemplaza manteniendo el nombre de archivo.
@@ -23,8 +23,9 @@ Landing de invitación al cumpleaños de Frani (`cumple.frani.be`): **tallarinat
 - Fecha: viernes 27 de noviembre de 2026.
 - Hora: 20:00. Entrada liberada. La tallarinata es 100% vegana.
 - RSVP campos: nombre, email (invitación Google Calendar), whatsapp (recordatorio), vienes (si/quizas), amigos (desplegable 0 a 4+), tiene_rest (si/no, si "si" muestra input restricciones).
-- RSVP: formulario embebido en la sección de cierre que hace POST (`no-cors`) al Google Apps Script web app (desplegado, endpoint real en `RSVP_ENDPOINT` de `src/pages/index.astro`), que escribe en la pestaña "Respuestas" de una Sheet de Drive. El código está en `apps-script/Code.gs`.
-- Pendiente de confirmar con Frani: lugar/dirección, URL real del Apps Script `/exec`.
+- RSVP: formulario embebido en la sección de cierre que hace POST (`no-cors`) al Google Apps Script web app (desplegado, endpoint real en `SCRIPT_ENDPOINT` de `src/pages/index.astro`), que escribe en la pestaña "Respuestas" de una Sheet de Drive. El código está en `apps-script/Code.gs`.
+- Lista de regalos: misma Sheet, pestaña "Regalos" (`id | regalo | precio | link | reservado | token | fecha`). Frani edita el catálogo a mano en la planilla. El front hace GET `?lista=regalos` y POST `action=reservar|liberar` (no-cors). Reserva anónima por token aleatorio en localStorage (`regalo:<id>`); el GET expone solo `huella` = SHA-256 del token para que el navegador reconozca sus reservas. `LockService` evita dobles reservas simultáneas.
+- Pendiente de confirmar con Frani: lugar/dirección, redeploy del Apps Script con la versión nueva de `Code.gs`.
 
 ## Entorno (importante)
 
